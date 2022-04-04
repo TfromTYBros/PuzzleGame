@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 910636462996637907}
   - component: {fileID: 4830110124675122475}
   - component: {fileID: 310882787572979067}
+  - component: {fileID: 1293584337469384827}
   m_Layer: 5
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -104,6 +105,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CountText: {fileID: 3684281538304770120}
+  LineIndex: 0
+--- !u!61 &1293584337469384827
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541744981522918996}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.00020623207, y: -0.003270477}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.1106703, y: 1.1109755}
+  m_EdgeRadius: 0
 --- !u!1 &3074070379290371951
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,12 @@ public class PuzzleGame : MonoBehaviour
     [SerializeField] private int GameLevel = 1;
     [SerializeField] private int MakeCount = 1;
 
+    //Balls
+    public List<GameObject> Balls;
+    public GameObject BallPrefab;
+    Vector3 BallPos = new Vector3(0.0f, -3.5f, -5.0f);
+    [SerializeField] private int BallMakeCount = 0;
+
     void Start()
     {
         StartGame();
@@ -112,5 +118,20 @@ public class PuzzleGame : MonoBehaviour
             Block.transform.SetParent(Lines[blockScript.GetLineIndex()].transform);
             Block.transform.position = new Vector3(Block.transform.position.x, Lines[blockScript.GetLineIndex()].transform.position.y, BlockPosZ);
         }
+    }
+
+    private void MakeBall()
+    {
+        Instantiate(BallPrefab,BallPos,)
+    }
+
+    private void ChangeBallMakeCount(int count)
+    {
+        BallMakeCount = count;
+    }
+
+    private void GetBallMakeCount()
+    {
+
     }
 }
