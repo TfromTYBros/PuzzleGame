@@ -10,7 +10,8 @@ public class PuzzleGame : MonoBehaviour
     public GameObject BlockPrefab;
     [SerializeField] private List<int> RandomSeed = new List<int> { 0,1,2,3,4};
 
-    [SerializeField] private int GameLevel = 2;
+    [SerializeField] private int GameLevel = 1;
+    [SerializeField] private int MakeCount = 1;
 
     void Start()
     {
@@ -28,7 +29,28 @@ public class PuzzleGame : MonoBehaviour
 
     private void StartGame()
     {
+        ChangeGameLevel(1);
         FirstMakeBlocks();
+    }
+
+    private void ChangeGameLevel(int level)
+    {
+        GameLevel = level;
+    }
+
+    public int GetGameLevel()
+    {
+        return GameLevel;
+    }
+
+    private void ChangeMakeCount(int count)
+    {
+        MakeCount = count;
+    }
+
+    private int GetMakeCount()
+    {
+        return MakeCount;
     }
 
     private void FirstMakeBlocks()
@@ -39,11 +61,12 @@ public class PuzzleGame : MonoBehaviour
             for (int j = 0; j < 3; j++)
             {
                 GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[RandomSeed[j]], Lines[i].transform.position.y, BlockPosZ), Quaternion.identity, Lines[i].transform);
-                newBlock.name = "Block" + i;
+                newBlock.name = "Block" + GetMakeCount();
                 BlockScript blockScript = newBlock.GetComponent<BlockScript>();
                 blockScript.SetHitCount(GetGameLevel());
                 blockScript.SetLineIndex(i);
             }
+            ChangeMakeCount(GetMakeCount() + 1);
         }
     }
 
@@ -54,11 +77,12 @@ public class PuzzleGame : MonoBehaviour
         for (int i = 0; i < value; i++)
         {
             GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[RandomSeed[i]], Lines[0].transform.position.y, BlockPosZ), Quaternion.identity, Lines[0].transform);
-            newBlock.name = "Block" + i;
+            newBlock.name = "Block" + GetMakeCount();
             BlockScript blockScript = newBlock.GetComponent<BlockScript>();
-            blockScript.SetHitCount(GameLevel);
+            blockScript.SetHitCount(GetGameLevel());
             blockScript.SetLineIndex(0);
         }
+        ChangeMakeCount(GetMakeCount() + 1);
     }
 
     private void RandomSeedChange()
@@ -84,19 +108,9 @@ public class PuzzleGame : MonoBehaviour
         {
             GameObject Block = Lines[lineIndex].transform.GetChild(0).gameObject;
             BlockScript blockScript = Block.GetComponent<BlockScript>();
-            blockScript.MoveLineIndex();
+            blockScript.MoveLine();
             Block.transform.SetParent(Lines[blockScript.GetLineIndex()].transform);
             Block.transform.position = new Vector3(Block.transform.position.x, Lines[blockScript.GetLineIndex()].transform.position.y, BlockPosZ);
         }
-    }
-
-    private void GameLevelUp()
-    {
-        GameLevel++;
-    }
-
-    private int GetGameLevel()
-    {
-        return GameLevel;
     }
 }

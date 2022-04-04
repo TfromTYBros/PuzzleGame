@@ -11,7 +11,6 @@ public class BlockScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //SetHitCount(1);
         TextChange();
     }
 
@@ -87,7 +86,7 @@ public class BlockScript : MonoBehaviour
         return LineIndex;
     }
 
-    public void MoveLineIndex()
+    public void MoveLine()
     {
         LineIndex++;
     }
