@@ -8,6 +8,8 @@ public class PuzzleGame : MonoBehaviour
     private readonly List<float> PosXs = new List<float>{ -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
     private readonly float BlockPosZ = 2.0f;
     public GameObject BlockPrefab;
+    [SerializeField] private List<int> RandomSeed = new List<int> { 0,1,2,3,4};
+
     void Start()
     {
         StartGame();
@@ -18,21 +20,50 @@ public class PuzzleGame : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             AllMoveBlocks();
+            RandomMakeBlocks(3);
         }
     }
 
     private void StartGame()
     {
-        MakeBlocks();
+        FirstMakeBlocks();
     }
 
-    private void MakeBlocks()
+    private void FirstMakeBlocks()
+    {
+        //ゲーム初回用に変更しよう。
+        for (int i = 2; i >= 0; i--)
+        {
+            RandomSeedChange();
+            for (int j = 0; j < 3; j++)
+            {
+                GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[RandomSeed[j]], Lines[i].transform.position.y, BlockPosZ), Quaternion.identity, Lines[i].transform);
+                newBlock.name = "Block" + i;
+                newBlock.GetComponent<BlockScript>().SetLineIndex(i);
+            }
+        }
+    }
+
+    private void RandomMakeBlocks(int value)
+    {
+        RandomSeedChange();
+        //Debug.Log(RandomSeed);
+        for (int i = 0; i < value; i++)
+        {
+            GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[RandomSeed[i]], Lines[0].transform.position.y, BlockPosZ), Quaternion.identity, Lines[0].transform);
+            newBlock.name = "Block" + i;
+            newBlock.GetComponent<BlockScript>().SetLineIndex(0);
+        }
+    }
+
+    private void RandomSeedChange()
     {
         for (int i = 0; i < 5; i++)
         {
-            GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[i], Lines[i].transform.position.y, BlockPosZ), Quaternion.identity, Lines[i].transform);
-            newBlock.name = "Block" + i;
-            newBlock.GetComponent<BlockScript>().SetLineIndex(i);
+            int value = Random.Range(0, 5);
+            int temp = RandomSeed[i];
+            RandomSeed[i] = RandomSeed[value];
+            RandomSeed[value] = temp;
         }
     }
 
