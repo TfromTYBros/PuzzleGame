@@ -10,6 +10,8 @@ public class PuzzleGame : MonoBehaviour
     public GameObject BlockPrefab;
     [SerializeField] private List<int> RandomSeed = new List<int> { 0,1,2,3,4};
 
+    [SerializeField] private int GameLevel = 2;
+
     void Start()
     {
         StartGame();
@@ -31,7 +33,6 @@ public class PuzzleGame : MonoBehaviour
 
     private void FirstMakeBlocks()
     {
-        //ゲーム初回用に変更しよう。
         for (int i = 2; i >= 0; i--)
         {
             RandomSeedChange();
@@ -39,7 +40,9 @@ public class PuzzleGame : MonoBehaviour
             {
                 GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[RandomSeed[j]], Lines[i].transform.position.y, BlockPosZ), Quaternion.identity, Lines[i].transform);
                 newBlock.name = "Block" + i;
-                newBlock.GetComponent<BlockScript>().SetLineIndex(i);
+                BlockScript blockScript = newBlock.GetComponent<BlockScript>();
+                blockScript.SetHitCount(GetGameLevel());
+                blockScript.SetLineIndex(i);
             }
         }
     }
@@ -52,7 +55,9 @@ public class PuzzleGame : MonoBehaviour
         {
             GameObject newBlock = Instantiate(BlockPrefab, new Vector3(PosXs[RandomSeed[i]], Lines[0].transform.position.y, BlockPosZ), Quaternion.identity, Lines[0].transform);
             newBlock.name = "Block" + i;
-            newBlock.GetComponent<BlockScript>().SetLineIndex(0);
+            BlockScript blockScript = newBlock.GetComponent<BlockScript>();
+            blockScript.SetHitCount(GameLevel);
+            blockScript.SetLineIndex(0);
         }
     }
 
@@ -83,5 +88,15 @@ public class PuzzleGame : MonoBehaviour
             Block.transform.SetParent(Lines[blockScript.GetLineIndex()].transform);
             Block.transform.position = new Vector3(Block.transform.position.x, Lines[blockScript.GetLineIndex()].transform.position.y, BlockPosZ);
         }
+    }
+
+    private void GameLevelUp()
+    {
+        GameLevel++;
+    }
+
+    private int GetGameLevel()
+    {
+        return GameLevel;
     }
 }

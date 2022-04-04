@@ -11,7 +11,7 @@ public class BlockScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetHitCount(1);
+        //SetHitCount(1);
         TextChange();
     }
 
@@ -25,10 +25,31 @@ public class BlockScript : MonoBehaviour
         }
     }
 
-    public void SetHitCount(int count)
+    public void SetHitCount(int gameLevel)
     {
-        Debug.Log("SetHitCount : " + count);
-        HitCount = count;
+        int value = RandomSeed(gameLevel);
+        Debug.Log("SetHitCount : " + value);
+        HitCount = value;
+    }
+
+    public int RandomSeed(int gameLevel)
+    {
+        if (gameLevel == 1)
+        {
+            return Random.Range(1, 4);
+        }
+        else if (gameLevel == 2)
+        {
+            return Random.Range(4, 8);
+        }
+        else if (gameLevel == 3)
+        {
+            return Random.Range(8, 13);
+        }
+        else
+        {
+            return Random.Range(13, 17);
+        }
     }
 
     private void DecrementHitCount()
