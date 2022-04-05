@@ -5,9 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Block
-  - Wall
   - Ball
   - Ground
+  - Left
+  - Right
+  - Up
   layers:
   - Default
   - TransparentFX
