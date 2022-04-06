@@ -5,6 +5,7 @@ using UnityEngine;
 public class BallScript : MonoBehaviour
 {
     bool MoveStart = false;
+    bool plus = true;
 
     void Start()
     {
@@ -34,9 +35,10 @@ public class BallScript : MonoBehaviour
         {
             Debug.Log("RightTouch" + this.gameObject.name);
         }
-        if (collision.transform.CompareTag("UpOrBlock"))
+        if (collision.transform.CompareTag("Up") || collision.transform.CompareTag("Block"))
         {
             Debug.Log("UpOrBlockTouch" + this.gameObject.name);
+            plus = false;
         }
     }
 
@@ -47,6 +49,11 @@ public class BallScript : MonoBehaviour
 
     private void Moving()
     {
-        //this.gameObject.transform.Translate()
+        this.gameObject.transform.Translate(0.0f, 0.1f * GetReverse(), 0.0f);
+    }
+
+    private float GetReverse()
+    {
+        return plus ? 1.0f : -1.0f;
     }
 }

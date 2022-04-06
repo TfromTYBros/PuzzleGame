@@ -53,7 +53,7 @@ public class BlockScript : MonoBehaviour
 
     private void DecrementHitCount()
     {
-        Debug.Log("DecrementHitCount");
+        //Debug.Log("DecrementHitCount");
         HitCount--;
     }
 
@@ -64,10 +64,10 @@ public class BlockScript : MonoBehaviour
 
     private void IsDestroy()
     {
-        Debug.Log("IsDestroy");
+        //Debug.Log("IsDestroy");
         if (HitCount <= 0)
         {
-            Debug.Log("Destroy : " + this.gameObject.name);
+            //Debug.Log("Destroy : " + this.gameObject.name);
             Destroy(this.gameObject);
         }
         else

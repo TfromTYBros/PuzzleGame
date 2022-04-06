@@ -5,9 +5,18 @@ using UnityEngine;
 public class UserInput : MonoBehaviour
 {
     PuzzleGame puzzleGame;
+    /*********Pos*********/
     public Transform touchGroundPos;
-    private readonly Vector3 ballPosOnStartGame = new Vector3(0.0f, -3.5f, 0.0f);
+    private readonly Vector3 ballPosOnStartGame = new Vector3(0.0f, -3.5f, -5.0f);
+
+    /********Rotate********/
     public GameObject guideBall;
+    private readonly float ROTATE_LIMIT = 1.0f;
+    private readonly float MOUSE_LIMIT = 1.5f;
+
+    /*********Parts********/
+    private readonly float NOTHING = 0.0f;
+    private readonly float REVERSE = -1.0f;
 
     void Start()
     {
@@ -17,13 +26,18 @@ public class UserInput : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (puzzleGame.state == PuzzleGame.GameState.BALL_ANGLE)
+            {
+                //Debug.Log("Click from BALL_ANGLE");
+                DisGuideBall();
+                puzzleGame.Shot();
+            }
+        }
         if (puzzleGame.state == PuzzleGame.GameState.BALL_ANGLE)
         {
             MouseFollow();
-        }
-        else if (puzzleGame.state == PuzzleGame.GameState.BALL_ANGLE && Input.GetMouseButtonDown(0))
-        {
-            puzzleGame.Shot();
         }
     }
 
@@ -47,8 +61,24 @@ public class UserInput : MonoBehaviour
 
     private void MouseFollow()
     {
-        Vector2 mouse = guideBall.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Vector2 mouse = guideBall.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouse.y = MOUSE_LIMIT;
+        if (mouse.x >= ROTATE_LIMIT)
+        {
+            mouse.x = ROTATE_LIMIT;
+        }
+        if (mouse.x <= ROTATE_LIMIT * REVERSE)
+        {
+            mouse.x = ROTATE_LIMIT * REVERSE;
+        }
+        Debug.Log(mouse);
         guideBall.transform.rotation = Quaternion.FromToRotation(Vector2.up, mouse);
+    }
+
+    private void DisGuideBall()
+    {
+        guideBall.SetActive(false);
     }
 
     /**********

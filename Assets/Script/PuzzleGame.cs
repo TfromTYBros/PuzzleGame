@@ -22,7 +22,7 @@ public class PuzzleGame : MonoBehaviour
     Vector3 ballPos = new Vector3(0.0f, -3.5f, -5.0f);
     Vector3 outBallPos = new Vector3(-5.0f, 0.0f, -5.0f);
     [SerializeField] private int ballMakeCount = 0;
-    WaitForSeconds ballMakeTimeDistance = new WaitForSeconds(1.0f);
+    WaitForSeconds ballMakeTimeDistance = new WaitForSeconds(0.1f);
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
@@ -168,7 +168,7 @@ public class PuzzleGame : MonoBehaviour
     public void Shot()
     {
         //Test
-        ChangeCopy(GetBallsCount());
+        ChangeCopy(GetBallsCount()+5);
         StartCoroutine(AllBallsMoveStart());
     }
 
