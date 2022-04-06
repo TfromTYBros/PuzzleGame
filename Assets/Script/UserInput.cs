@@ -13,6 +13,7 @@ public class UserInput : MonoBehaviour
     public GameObject guideBall;
     private readonly float ROTATE_LIMIT = 1.0f;
     private readonly float MOUSE_LIMIT = 1.5f;
+    [SerializeField] float way = 0.0f;
 
     /*********Parts********/
     private readonly float NOTHING = 0.0f;
@@ -33,12 +34,22 @@ public class UserInput : MonoBehaviour
                 //Debug.Log("Click from BALL_ANGLE");
                 DisGuideBall();
                 puzzleGame.Shot();
+                puzzleGame.StartMovingNow();
             }
         }
         if (puzzleGame.state == PuzzleGame.GameState.BALL_ANGLE)
         {
             MouseFollow();
         }
+    }
+
+    /******************
+     *ゲッターセッター
+     *****************/
+
+    public float GetWay()
+    {
+        return way;
     }
 
     /************
@@ -61,7 +72,6 @@ public class UserInput : MonoBehaviour
 
     private void MouseFollow()
     {
-        //Vector2 mouse = guideBall.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouse.y = MOUSE_LIMIT;
         if (mouse.x >= ROTATE_LIMIT)
@@ -74,6 +84,7 @@ public class UserInput : MonoBehaviour
         }
         Debug.Log(mouse);
         guideBall.transform.rotation = Quaternion.FromToRotation(Vector2.up, mouse);
+        way = mouse.x;
     }
 
     private void DisGuideBall()

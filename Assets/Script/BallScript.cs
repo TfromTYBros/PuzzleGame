@@ -4,21 +4,64 @@ using UnityEngine;
 
 public class BallScript : MonoBehaviour
 {
-    bool MoveStart = false;
-    bool plus = true;
-
-    void Start()
-    {
-        
-    }
+    [SerializeField] bool moveStart = false;
+    [SerializeField] bool plusX = true;
+    [SerializeField] bool plusY = true;
+    [SerializeField] private float speedX = 0.0f;
+    [SerializeField] private float speedY = 0.0f;
 
     private void FixedUpdate()
     {
-        if (MoveStart)
+        if (moveStart)
         {
             Moving();
         }
     }
+
+    /********************
+     * セッターゲッター
+     *******************/
+
+    public void SetSpeedXY(float x, float y)
+    {
+        speedX = x;
+        speedY = y;
+    }
+
+    private float GetSpeedX()
+    {
+        return speedX * GetReverseX();
+    }
+
+    private float GetSpeedY()
+    {
+        return speedY * GetReverseY();
+    }
+
+    private void ChangePlusX()
+    {
+        if (plusX) plusX = false;
+        else plusX = true;
+    }
+
+    private void ChangePlusY()
+    {
+        if (plusY) plusY = false;
+        else plusY = true;
+    }
+
+    private float GetReverseX()
+    {
+        return plusX ? 1.0f : -1.0f;
+    }
+
+    private float GetReverseY()
+    {
+        return plusY ? 1.0f : -1.0f;
+    }
+
+    /****************************/
+    /****************************/
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -30,30 +73,28 @@ public class BallScript : MonoBehaviour
         if (collision.transform.CompareTag("Left"))
         {
             Debug.Log("LeftTouch" + this.gameObject.name);
+            ChangePlusX();
         }
         if (collision.transform.CompareTag("Right"))
         {
             Debug.Log("RightTouch" + this.gameObject.name);
+            ChangePlusX();
         }
         if (collision.transform.CompareTag("Up") || collision.transform.CompareTag("Block"))
         {
             Debug.Log("UpOrBlockTouch" + this.gameObject.name);
-            plus = false;
+            ChangePlusY();
         }
     }
 
     public void Move()
     {
-        MoveStart = true;
+        moveStart = true;
     }
 
     private void Moving()
     {
-        this.gameObject.transform.Translate(0.0f, 0.1f * GetReverse(), 0.0f);
+        this.gameObject.transform.Translate(GetSpeedX(), GetSpeedY(), 0.0f);
     }
 
-    private float GetReverse()
-    {
-        return plus ? 1.0f : -1.0f;
-    }
 }
