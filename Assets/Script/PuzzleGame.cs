@@ -5,15 +5,16 @@ using UnityEngine;
 public class PuzzleGame : MonoBehaviour
 {
     public GameObject[] Lines;
-    private readonly List<float> posXs = new List<float>{ -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
-    private readonly float blockPosZ = 2.0f;
-    [SerializeField] public GameObject blockPrefab;
-    [SerializeField] private List<int> randomSeed = new List<int> { 0,1,2,3,4};
-
+    [SerializeField] private List<int> randomSeed = new List<int> { 0, 1, 2, 3, 4 };
     [SerializeField] private int gameLevel = 1;
-    [SerializeField] private int makeCount = 1;
 
-    //Balls
+    //*************Block***************//
+    private readonly List<float> posXs = new List<float> { -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
+    private readonly float blockPosZ = 2.0f;
+    public GameObject blockPrefab;
+    [SerializeField] private int blockMakeCount = 1;
+
+    //*************Balls***************//
     [SerializeField] public int ballsCount = 0;
     [SerializeField] private int copy = 0;
     public GameObject ballPrefab;
@@ -23,12 +24,16 @@ public class PuzzleGame : MonoBehaviour
     [SerializeField] private int ballMakeCount = 0;
     WaitForSeconds ballMakeTimeDistance = new WaitForSeconds(1.0f);
 
-    //GameState
-    public enum GameState { START_GAME,BALL_POS,BALL_ANGLE,BALL_MOVETIME,CLEAN_UP,GAMESET,GAMEOVER };
+    //***********GameState**************//
+    public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
     public GameState state;
+
+    //***********UserInput*************//
+    UserInput userInput;
 
     void Start()
     {
+        userInput = FindObjectOfType<UserInput>();
         state = GameState.START_GAME;
         StartGame();
     }
@@ -51,14 +56,14 @@ public class PuzzleGame : MonoBehaviour
         return gameLevel;
     }
 
-    private void ChangeMakeCount(int count)
+    private void ChangeBlockMakeCount(int count)
     {
-        makeCount = count;
+        blockMakeCount = count;
     }
 
-    private int GetMakeCount()
+    private int GetBlockMakeCount()
     {
-        return makeCount;
+        return blockMakeCount;
     }
 
     private void RandomSeedChange()
@@ -82,14 +87,24 @@ public class PuzzleGame : MonoBehaviour
         return ballsCount;
     }
 
-    private void ChangeballMakeCount(int count)
+    private void ChangeBallMakeCount(int count)
     {
         ballMakeCount = count;
     }
 
-    private int GetballMakeCount()
+    private int GetBallMakeCount()
     {
         return ballMakeCount;
+    }
+
+    private void ChangeCopy(int value)
+    {
+        copy = value;
+    }
+
+    private int GetCopy()
+    {
+        return copy;
     }
 
     /************
@@ -100,8 +115,10 @@ public class PuzzleGame : MonoBehaviour
     {
         ChangeGameLevel(1);
         FirstMakeBlocks();
-        MakeBall();
-        StartballPos();
+        //MakeBall();
+        userInput.EnaGuideBall();
+        userInput.FirstDicidePos();
+        StartBallAngle();
     }
 
     private void FirstMakeBlocks()
@@ -112,30 +129,23 @@ public class PuzzleGame : MonoBehaviour
             for (int j = 0; j < 3; j++)
             {
                 GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
-                newBlock.name = "Block" + GetMakeCount();
+                newBlock.name = "Block" + GetBlockMakeCount();
                 BlockScript blockScript = newBlock.GetComponent<BlockScript>();
                 blockScript.SetHitCount(GetGameLevel());
                 blockScript.SetLineIndex(i);
             }
-            ChangeMakeCount(GetMakeCount() + 1);
+            ChangeBlockMakeCount(GetBlockMakeCount() + 1);
         }
     }
 
+    /*
     private void MakeBall()
     {
         Instantiate(ballPrefab, outBallPos, Quaternion.identity, ballBox.transform);
         ChangeBallsCount(GetBallsCount() + 1);
-        ChangeballMakeCount(GetballMakeCount() + 1);
+        ChangeBallMakeCount(GetBallMakeCount() + 1);
     }
-
-    /*********
-    *BALL_POS
-    *********/
-
-    public void StartballPos()
-    {
-        state = GameState.BALL_POS;
-    }
+    */
 
     /***********
     *BALL_ANGLE
@@ -150,14 +160,36 @@ public class PuzzleGame : MonoBehaviour
     *BALL_MOVETIME
     **************/
 
-    public void StartBallMoveTime()
+    public void StartMovingNow()
     {
-        state = GameState.BALL_MOVETIME;
+        state = GameState.MOVING_NOW;
+    }
+
+    public void Shot()
+    {
+        //Test
+        ChangeCopy(GetBallsCount());
+        StartCoroutine(AllBallsMoveStart());
+    }
+
+    private GameObject MakeBall()
+    {
+        GameObject ball = Instantiate(ballPrefab, userInput.touchGroundPos.position, Quaternion.identity, ballBox.transform);
+        ChangeBallsCount(GetBallsCount() + 1);
+        ChangeBallMakeCount(GetBallMakeCount() + 1);
+        return ball;
     }
 
     private IEnumerator AllBallsMoveStart()
     {
-        yield return ballMakeTimeDistance;
+        if (GetCopy() <= 0) yield break;
+        while (GetCopy() != 0)
+        {
+            yield return ballMakeTimeDistance;
+            GameObject ball = MakeBall();
+            ball.GetComponent<BallScript>().Move();
+            ChangeCopy(GetCopy() - 1);
+        }
     }
 
     /*********
@@ -189,12 +221,12 @@ public class PuzzleGame : MonoBehaviour
         for (int i = 0; i < value; i++)
         {
             GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
-            newBlock.name = "Block" + GetMakeCount();
+            newBlock.name = "Block" + GetBlockMakeCount();
             BlockScript blockScript = newBlock.GetComponent<BlockScript>();
             blockScript.SetHitCount(GetGameLevel());
             blockScript.SetLineIndex(0);
         }
-        ChangeMakeCount(GetMakeCount() + 1);
+        ChangeBlockMakeCount(GetBlockMakeCount() + 1);
     }
 
     private void AllMoveBlocks()
@@ -243,7 +275,7 @@ public class PuzzleGame : MonoBehaviour
         ChangeGameLevel(1);
 
         //makeCount
-        ChangeMakeCount(0);
+        ChangeBlockMakeCount(0);
     }
 
     /********

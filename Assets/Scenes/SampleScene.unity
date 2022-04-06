@@ -153,37 +153,6 @@ Transform:
   m_Father: {fileID: 1102909383}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &90500572
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 90500573}
-  m_Layer: 0
-  m_Name: BallGuideBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &90500573
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90500572}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2107359922}
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &125473039
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,14 +486,15 @@ MonoBehaviour:
   - {fileID: 770552142}
   - {fileID: 1464519485}
   - {fileID: 1632623563}
-  BlockPrefab: {fileID: 2541744981522918996, guid: eaaa992bf77e024469d6677c52f3ea2f, type: 3}
-  RandomSeed: 0000000001000000020000000300000004000000
-  GameLevel: 1
-  MakeCount: 1
-  Balls: []
-  BallPrefab: {fileID: 4984880114756013979, guid: cd03ad2e5ae0bfb4e8ea455e99a337ae, type: 3}
-  BallBox: {fileID: 1416038611}
-  BallMakeCount: 0
+  randomSeed: 0000000001000000020000000300000004000000
+  gameLevel: 1
+  blockPrefab: {fileID: 2541744981522918996, guid: eaaa992bf77e024469d6677c52f3ea2f, type: 3}
+  blockMakeCount: 1
+  ballsCount: 0
+  copy: 0
+  ballPrefab: {fileID: 4984880114756013979, guid: cd03ad2e5ae0bfb4e8ea455e99a337ae, type: 3}
+  ballBox: {fileID: 1416038611}
+  ballMakeCount: 0
   state: 0
 --- !u!4 &220741530
 Transform:
@@ -552,6 +522,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7993a24bf431a447acd6c7d848a8b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  touchGroundPos: {fileID: 2107359922}
+  guideBall: {fileID: 2107359921}
 --- !u!1 &288593744
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,6 +711,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -754,6 +727,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1673,7 +1662,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1299596281
 Transform:
@@ -2130,12 +2119,12 @@ GameObject:
   - component: {fileID: 2107359922}
   - component: {fileID: 2107359923}
   m_Layer: 0
-  m_Name: BallSample
+  m_Name: GuideBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 0
 --- !u!4 &2107359922
 Transform:
   m_ObjectHideFlags: 0
@@ -2143,13 +2132,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2107359921}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 1299596281}
-  m_Father: {fileID: 90500573}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2107359923
 SpriteRenderer:
