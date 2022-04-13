@@ -10,6 +10,8 @@ TagManager:
   - Left
   - Right
   - Up
+  - Down
+  - Item
   layers:
   - Default
   - TransparentFX

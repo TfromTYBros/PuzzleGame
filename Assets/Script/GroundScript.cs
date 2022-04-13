@@ -5,17 +5,18 @@ using UnityEngine;
 public class GroundScript : MonoBehaviour
 {
     PuzzleGame puzzleGame;
+    UserInput userInput;
+
     private void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
+        userInput = FindObjectOfType<UserInput>();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Ball"))
         {
-            //ˆÊ’u‹L‰¯
-
-
+            userInput.DicidePos(collision.transform.position.x);
             puzzleGame.IsStartCleanUp();
         }
     }

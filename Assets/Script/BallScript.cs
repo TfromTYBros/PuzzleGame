@@ -62,7 +62,7 @@ public class BallScript : MonoBehaviour
 
     /****************************/
     /****************************/
-
+ 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Ground"))
@@ -80,12 +80,46 @@ public class BallScript : MonoBehaviour
             Debug.Log("RightTouch" + this.gameObject.name);
             ChangePlusX();
         }
-        if (collision.transform.CompareTag("Up") || collision.transform.CompareTag("Block"))
+        if (collision.transform.CompareTag("Up"))
         {
-            Debug.Log("UpOrBlockTouch" + this.gameObject.name);
+            Debug.Log("UpTouch" + this.gameObject.name);
+            ChangePlusY();
+        }
+        if (collision.transform.CompareTag("Down"))
+        {
+            Debug.Log("DownTouch" + this.gameObject.name);
             ChangePlusY();
         }
     }
+    /*
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Ground"))
+        {
+            Debug.Log("GoundTouch" + this.gameObject.name);
+            Destroy(this.gameObject);
+        }
+        if (collision.transform.CompareTag("Left"))
+        {
+            Debug.Log("LeftTouch" + this.gameObject.name);
+            ChangePlusX();
+        }
+        if (collision.transform.CompareTag("Right"))
+        {
+            Debug.Log("RightTouch" + this.gameObject.name);
+            ChangePlusX();
+        }
+        if (collision.transform.CompareTag("Up"))
+        {
+            Debug.Log("UpTouch" + this.gameObject.name);
+            ChangePlusY();
+        }
+        if (collision.transform.CompareTag("Down"))
+        {
+            Debug.Log("DownTouch" + this.gameObject.name);
+            ChangePlusY();
+        }
+    }*/
 
     public void Move()
     {

@@ -163,6 +163,7 @@ public class PuzzleGame : MonoBehaviour
     public void StartBallAngle()
     {
         state = GameState.BALL_ANGLE;
+        userInput.EnaGuideBall();
     }
 
     /***********
@@ -210,28 +211,35 @@ public class PuzzleGame : MonoBehaviour
     public void IsStartCleanUp()
     {
         DestroyCountPlus();
+
         if (GetBallsCount() == GetDestroyCount())
         {
             StartCleanUp();
         }
     }
 
-    public void StartCleanUp()
+    private void StartCleanUp()
     {
+        //resets
+        userInput.BoolGroundTouchReset();
+        ResetDestroyCount();
+
         AllMoveBlocks();
         if (IsGameOver())
         {
+            Debug.Log("GameOver");
             StartGameOver();
         }
         else
         {
             RandomMakeBlocks(3);
+            StartBallAngle();
         }
     }
 
     bool IsGameOver()
     {
-        return 0 <= Lines[8].transform.childCount;
+        return 1 <= Lines[7].transform.childCount;
     }
 
     private void RandomMakeBlocks(int value)
@@ -274,20 +282,22 @@ public class PuzzleGame : MonoBehaviour
     private void StartGameOver()
     {
         state = GameState.GAMEOVER;
-        AllReset();
+        userInput.EnaGameOverPanel();
     }
 
-    private void AllReset()
+    public void ReStart()
     {
         //Ball
         ChangeBallsCount(0);
+        userInput.ResetPos();
 
         //Block
         foreach (GameObject line in Lines)
         {
-            while (line.transform.childCount != 0)
+            //Debug.Log(line.name);
+            foreach (Transform block in line.transform)
             {
-                Destroy(line.transform.GetChild(0));
+                GameObject.Destroy(block.gameObject);
             }
         }
 
@@ -296,6 +306,9 @@ public class PuzzleGame : MonoBehaviour
 
         //makeCount
         ChangeBlockMakeCount(0);
+
+        //reStart
+        StartGame();
     }
 
     /********
@@ -305,7 +318,6 @@ public class PuzzleGame : MonoBehaviour
     private void StartGameSet()
     {
         state = GameState.GAMESET;
-        AllReset();
     }
 
 }

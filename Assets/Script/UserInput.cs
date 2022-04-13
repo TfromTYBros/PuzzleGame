@@ -8,12 +8,16 @@ public class UserInput : MonoBehaviour
     /*********Pos*********/
     public Transform touchGroundPos;
     private readonly Vector3 ballPosOnStartGame = new Vector3(0.0f, -3.5f, -5.0f);
+    [SerializeField] private bool groundTouched = false;
 
     /********Rotate********/
     public GameObject guideBall;
     private readonly float ROTATE_LIMIT = 1.0f;
     private readonly float MOUSE_LIMIT = 1.5f;
     [SerializeField] float way = 0.0f;
+
+    /*********GameOver********/
+    public GameObject gameOverPanel;
 
     /*********Parts********/
     private readonly float NOTHING = 0.0f;
@@ -33,10 +37,18 @@ public class UserInput : MonoBehaviour
             {
                 //Debug.Log("Click from BALL_ANGLE");
                 DisGuideBall();
+                BoolGroundTouchReset();
                 puzzleGame.Shot();
                 puzzleGame.StartMovingNow();
             }
+            else if (puzzleGame.state == PuzzleGame.GameState.GAMEOVER)
+            {
+                DisGameOverPanel();
+                puzzleGame.ReStart();
+            }
         }
+
+        //Ç∏Ç¡Ç∆ìÆÇ≠ÉÅÉ\ÉbÉh
         if (puzzleGame.state == PuzzleGame.GameState.BALL_ANGLE)
         {
             MouseFollow();
@@ -50,6 +62,31 @@ public class UserInput : MonoBehaviour
     public float GetWay()
     {
         return way;
+    }
+
+    private void GroundTouch()
+    {
+        groundTouched = true;
+    }
+
+    public void BoolGroundTouchReset()
+    {
+        groundTouched = false;
+    }
+
+    private bool BoolGetGroundTouch()
+    {
+        return groundTouched;
+    }
+
+    public void EnaGameOverPanel()
+    {
+        gameOverPanel.SetActive(true);
+    }
+
+    private void DisGameOverPanel()
+    {
+        gameOverPanel.SetActive(false);
     }
 
     /************
@@ -82,7 +119,7 @@ public class UserInput : MonoBehaviour
         {
             mouse.x = ROTATE_LIMIT * REVERSE;
         }
-        Debug.Log(mouse);
+        //Debug.Log(mouse);
         guideBall.transform.rotation = Quaternion.FromToRotation(Vector2.up, mouse);
         way = mouse.x;
     }
@@ -96,8 +133,21 @@ public class UserInput : MonoBehaviour
     *OnMOVETIME
     ***********/
 
-    private void DicidePos()
+    public void DicidePos(float x)
     {
-        
+        if (!BoolGetGroundTouch())
+        {
+            touchGroundPos.position = new Vector3(x, touchGroundPos.position.y, touchGroundPos.position.z);
+            GroundTouch();
+        }
+    }
+
+    /**********
+    *OnGAMEOVER
+    ***********/
+
+    public void ResetPos()
+    {
+        touchGroundPos.position = ballPosOnStartGame;
     }
 }

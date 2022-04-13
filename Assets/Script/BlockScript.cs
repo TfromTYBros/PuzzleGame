@@ -13,7 +13,7 @@ public class BlockScript : MonoBehaviour
     {
         TextChange();
     }
-
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
@@ -22,12 +22,19 @@ public class BlockScript : MonoBehaviour
             TextChange();
             IsDestroy();
         }
+    }*/
+
+    public void OnBallHit()
+    {
+        DecrementHitCount();
+        TextChange();
+        IsDestroy();
     }
 
     public void SetHitCount(int gameLevel)
     {
         int value = RandomSeed(gameLevel);
-        Debug.Log("SetHitCount : " + value);
+        //Debug.Log("SetHitCount : " + value);
         HitCount = value;
     }
 
@@ -69,10 +76,6 @@ public class BlockScript : MonoBehaviour
         {
             //Debug.Log("Destroy : " + this.gameObject.name);
             Destroy(this.gameObject);
-        }
-        else
-        {
-            Debug.Log("NotDestroy");
         }
     }
 
