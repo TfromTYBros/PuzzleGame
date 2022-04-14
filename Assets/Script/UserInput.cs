@@ -9,6 +9,7 @@ public class UserInput : MonoBehaviour
     public Transform touchGroundPos;
     private readonly Vector3 ballPosOnStartGame = new Vector3(0.0f, -3.5f, -5.0f);
     [SerializeField] private bool groundTouched = false;
+    public GameObject ballShadow;
 
     /********Rotate********/
     public GameObject guideBall;
@@ -107,6 +108,11 @@ public class UserInput : MonoBehaviour
     *OnBALL_ANGLE
     *************/
 
+    public void DisBallShadow()
+    {
+        ballShadow.SetActive(false);
+    }
+
     private void MouseFollow()
     {
         Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -129,6 +135,7 @@ public class UserInput : MonoBehaviour
         guideBall.SetActive(false);
     }
 
+
     /**********
     *OnMOVETIME
     ***********/
@@ -137,9 +144,21 @@ public class UserInput : MonoBehaviour
     {
         if (!BoolGetGroundTouch())
         {
-            touchGroundPos.position = new Vector3(x, touchGroundPos.position.y, touchGroundPos.position.z);
+            Vector3 touchPos = new Vector3(x, touchGroundPos.position.y, touchGroundPos.position.z);
+            touchGroundPos.position = touchPos;
+
+            //ballShadow
+            ballShadow.transform.position = touchPos;
+            EnaBallShadow();
+
+            //í˜ÇﬂêÿÇË
             GroundTouch();
         }
+    }
+
+    private void EnaBallShadow()
+    {
+        ballShadow.SetActive(true);
     }
 
     /**********

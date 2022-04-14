@@ -15,13 +15,11 @@ public class PuzzleGame : MonoBehaviour
     [SerializeField] private int blockMakeCount = 1;
 
     //*************Balls***************//
-    [SerializeField] public int ballsCount = 0;
     [SerializeField] private int copy = 0;
     public GameObject ballPrefab;
     public GameObject ballBox;
     Vector3 ballPos = new Vector3(0.0f, -3.5f, -5.0f);
     Vector3 outBallPos = new Vector3(-5.0f, 0.0f, -5.0f);
-    [SerializeField] private int ballMakeCount = 0;
     WaitForSeconds ballMakeTimeDistance = new WaitForSeconds(0.1f);
 
     //***********CleanUP**************//
@@ -34,9 +32,13 @@ public class PuzzleGame : MonoBehaviour
     //***********UserInput*************//
     UserInput userInput;
 
+    //***********UserStatus************//
+    UserStatus userStatus;
+
     void Start()
     {
         userInput = FindObjectOfType<UserInput>();
+        userStatus = FindObjectOfType<UserStatus>();
         state = GameState.START_GAME;
         StartGame();
     }
@@ -80,26 +82,6 @@ public class PuzzleGame : MonoBehaviour
         }
     }
 
-    private void ChangeBallsCount(int count)
-    {
-        ballsCount = count;
-    }
-
-    private int GetBallsCount()
-    {
-        return ballsCount;
-    }
-
-    private void ChangeBallMakeCount(int count)
-    {
-        ballMakeCount = count;
-    }
-
-    private int GetBallMakeCount()
-    {
-        return ballMakeCount;
-    }
-
     private void ChangeCopy(int value)
     {
         copy = value;
@@ -125,6 +107,7 @@ public class PuzzleGame : MonoBehaviour
         return destroyCount;
     }
 
+
     /************
      *START_GAME
      ***********/
@@ -133,7 +116,6 @@ public class PuzzleGame : MonoBehaviour
     {
         ChangeGameLevel(1);
         FirstMakeBlocks();
-        ChangeBallsCount(1);
         userInput.EnaGuideBall();
         userInput.FirstDicidePos();
         StartBallAngle();
@@ -163,6 +145,7 @@ public class PuzzleGame : MonoBehaviour
     public void StartBallAngle()
     {
         state = GameState.BALL_ANGLE;
+        userInput.DisBallShadow();
         userInput.EnaGuideBall();
     }
 
@@ -177,16 +160,13 @@ public class PuzzleGame : MonoBehaviour
 
     public void Shot()
     {
-        ChangeCopy(GetBallsCount());
+        ChangeCopy(userStatus.GetHaveBallCount());
         StartCoroutine(AllBallsMoveStart());
     }
 
     private GameObject MakeBall()
     {
         GameObject ball = Instantiate(ballPrefab, userInput.touchGroundPos.position, Quaternion.identity, ballBox.transform);
-        /*
-        ChangeBallsCount(GetBallsCount() + 1);
-        ChangeBallMakeCount(GetBallMakeCount() + 1);*/
         return ball;
     }
 
@@ -212,7 +192,7 @@ public class PuzzleGame : MonoBehaviour
     {
         DestroyCountPlus();
 
-        if (GetBallsCount() == GetDestroyCount())
+        if (userStatus.GetHaveBallCount() == GetDestroyCount())
         {
             StartCleanUp();
         }
@@ -288,7 +268,7 @@ public class PuzzleGame : MonoBehaviour
     public void ReStart()
     {
         //Ball
-        ChangeBallsCount(0);
+        userStatus.ChangeHaveBallCount(0);
         userInput.ResetPos();
 
         //Block
