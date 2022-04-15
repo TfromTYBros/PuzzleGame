@@ -10,27 +10,22 @@ public class UserStatus : MonoBehaviour
     public Text scoreText;
     [SerializeField] private int haveBallCount = 0;
     public Text haveBallCountText;
-    
+
+    /**********GameLevel**********/
+    [SerializeField] private int gameLevel = 1;
+
+    /**********BlockBreak*********/
+    [SerializeField] private int blockBreakPoint = 0;
+
     void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
         ChangeHaveBallCount(1);
     }
 
-    /******************
-     *ゲッターセッター
-     *****************/
-    private void ChangeScore(int newScore)
-    {
-        score = newScore;
-        if (score > 99999999) score = 9999999;
-    }
-
-    public int GetScore()
-    {
-        return score;
-    }
-
+    /*****
+     *Ball
+     *****/
     public void ChangeHaveBallCount(int value)
     {
         haveBallCount = value;
@@ -42,18 +37,30 @@ public class UserStatus : MonoBehaviour
         return haveBallCount;
     }
 
-    /***************
-     *BallTextChange
-     ***************/
-
     public void ChangeTextBallCount()
     {
         haveBallCountText.text = "BALL : " + GetHaveBallCount().ToString("000");
     }
 
-    /************
-     *ScoreChange
-     ************/
+    public void BallCountReset()
+    {
+        ChangeHaveBallCount(1);
+        ChangeTextBallCount();
+    }
+
+    /******
+     *Score
+    *******/
+    private void ChangeScore(int newScore)
+    {
+        score = newScore;
+        if (score > 99999999) score = 9999999;
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
 
     public void ScoreChangeOnBlockBreak()
     {
@@ -63,12 +70,62 @@ public class UserStatus : MonoBehaviour
 
     private void ScoreCal()
     {
-        ChangeScore(puzzleGame.GetGameLevel() * 1 + GetScore());
+        ChangeScore(GetGameLevel() * 1 + GetScore());
     }
 
     private void ScoreTextChange()
     {
         scoreText.text = "SCORE : " + score.ToString("00000000");
+    }
+
+    public void ScoreReset()
+    {
+        ChangeScore(0);
+        ScoreTextChange();
+    }
+
+    /**********
+     *GameLevel
+     **********/
+
+    public void ChangeGameLevel(int level)
+    {
+        gameLevel = level;
+    }
+
+    public int GetGameLevel()
+    {
+        return gameLevel;
+    }
+    public void IsGameLevelUp()
+    {
+        if ((GetBlockBreakPoint() % 10) == 0 && GetBlockBreakPoint() != 0)
+        {
+            GameLevelUp();
+        }
+    }
+    private void GameLevelUp()
+    {
+        gameLevel++;
+    }
+
+    /***********
+     *BlockBreak
+     ***********/
+
+    public void ChangeBlockBreakPoint(int point)
+    {
+        blockBreakPoint = point;
+    }
+
+    public int GetBlockBreakPoint()
+    {
+        return blockBreakPoint;
+    }
+
+    public void PlusBlockBreakPoint()
+    {
+        blockBreakPoint++;
     }
 
     /******

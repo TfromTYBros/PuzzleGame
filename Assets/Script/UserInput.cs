@@ -125,7 +125,7 @@ public class UserInput : MonoBehaviour
         {
             mouse.x = ROTATE_LIMIT * REVERSE;
         }
-        Debug.Log(mouse);
+        //Debug.Log(mouse);
         guideBall.transform.rotation = Quaternion.FromToRotation(Vector2.up, mouse);
         way = mouse.x;
     }
