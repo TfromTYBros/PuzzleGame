@@ -67,27 +67,27 @@ public class BallScript : MonoBehaviour
     {
         if (collision.transform.CompareTag("Ground"))
         {
-            Debug.Log("GoundTouch" + this.gameObject.name);
+            //Debug.Log("GoundTouch" + this.gameObject.name);
             Destroy(this.gameObject);
         }
         if (collision.transform.CompareTag("Left"))
         {
-            Debug.Log("LeftTouch" + this.gameObject.name);
+            //Debug.Log("LeftTouch" + this.gameObject.name);
             ChangePlusX();
         }
         if (collision.transform.CompareTag("Right"))
         {
-            Debug.Log("RightTouch" + this.gameObject.name);
+            //Debug.Log("RightTouch" + this.gameObject.name);
             ChangePlusX();
         }
         if (collision.transform.CompareTag("Up"))
         {
-            Debug.Log("UpTouch" + this.gameObject.name);
+            //Debug.Log("UpTouch" + this.gameObject.name);
             ChangePlusY();
         }
         if (collision.transform.CompareTag("Down"))
         {
-            Debug.Log("DownTouch" + this.gameObject.name);
+            //Debug.Log("DownTouch" + this.gameObject.name);
             ChangePlusY();
         }
     }

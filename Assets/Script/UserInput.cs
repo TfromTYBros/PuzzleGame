@@ -115,7 +115,7 @@ public class UserInput : MonoBehaviour
 
     private void MouseFollow()
     {
-        Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition) - guideBall.transform.position;
         mouse.y = MOUSE_LIMIT;
         if (mouse.x >= ROTATE_LIMIT)
         {
@@ -125,7 +125,7 @@ public class UserInput : MonoBehaviour
         {
             mouse.x = ROTATE_LIMIT * REVERSE;
         }
-        //Debug.Log(mouse);
+        Debug.Log(mouse);
         guideBall.transform.rotation = Quaternion.FromToRotation(Vector2.up, mouse);
         way = mouse.x;
     }
