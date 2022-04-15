@@ -14,12 +14,13 @@ public class PuzzleGame : MonoBehaviour
     public GameObject blockPrefab;
     [SerializeField] private int blockMakeCount = 1;
 
+    //*************Items************//
+    public GameObject itemPrefab;
+
     //*************Balls***************//
     [SerializeField] private int copy = 0;
     public GameObject ballPrefab;
     public GameObject ballBox;
-    Vector3 ballPos = new Vector3(0.0f, -3.5f, -5.0f);
-    Vector3 outBallPos = new Vector3(-5.0f, 0.0f, -5.0f);
     WaitForSeconds ballMakeTimeDistance = new WaitForSeconds(0.1f);
 
     //***********CleanUP**************//
@@ -41,11 +42,6 @@ public class PuzzleGame : MonoBehaviour
         userStatus = FindObjectOfType<UserStatus>();
         state = GameState.START_GAME;
         StartGame();
-    }
-
-    void Update()
-    {
-
     }
 
     /**********************
@@ -115,19 +111,25 @@ public class PuzzleGame : MonoBehaviour
     private void StartGame()
     {
         ChangeGameLevel(1);
-        FirstMakeBlocks();
+        FirstMakeBlockAndItems();
         userInput.EnaGuideBall();
         userInput.FirstDicidePos();
         StartBallAngle();
     }
 
-    private void FirstMakeBlocks()
+    private void FirstMakeBlockAndItems()
     {
         for (int i = 2; i >= 0; i--)
         {
             RandomSeedChange();
             for (int j = 0; j < 3; j++)
             {
+                if (i == 0 && j == 0)
+                {
+                    GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
+                    newItem.name = "Item" + newItem.GetComponent<ItemScript>().GetItemStatus();
+                    continue;
+                }
                 GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
                 newBlock.name = "Block" + GetBlockMakeCount();
                 BlockScript blockScript = newBlock.GetComponent<BlockScript>();
@@ -173,14 +175,15 @@ public class PuzzleGame : MonoBehaviour
     private IEnumerator AllBallsMoveStart()
     {
         if (GetCopy() <= 0) yield break;
-        while (GetCopy() != 0)
+        int ballCount = GetCopy();
+        while (ballCount != 0)
         {
             yield return ballMakeTimeDistance;
             GameObject ball = MakeBall();
             BallScript ballScript = ball.GetComponent<BallScript>();
             ballScript.SetSpeedXY(userInput.GetWay() / 10,0.1f);
             ballScript.Move();
-            ChangeCopy(GetCopy() - 1);
+            ballCount--;
         }
     }
 
@@ -192,9 +195,10 @@ public class PuzzleGame : MonoBehaviour
     {
         DestroyCountPlus();
 
-        if (userStatus.GetHaveBallCount() == GetDestroyCount())
+        if (GetCopy() == GetDestroyCount())
         {
             StartCleanUp();
+            ChangeCopy(0);
         }
     }
 
@@ -247,11 +251,21 @@ public class PuzzleGame : MonoBehaviour
         if (Lines[lineIndex].transform.childCount <= 0) return;
         while (Lines[lineIndex].transform.childCount != 0)
         {
-            GameObject Block = Lines[lineIndex].transform.GetChild(0).gameObject;
-            BlockScript blockScript = Block.GetComponent<BlockScript>();
-            blockScript.MoveLine();
-            Block.transform.SetParent(Lines[blockScript.GetLineIndex()].transform);
-            Block.transform.position = new Vector3(Block.transform.position.x, Lines[blockScript.GetLineIndex()].transform.position.y, blockPosZ);
+            GameObject obj = Lines[lineIndex].transform.GetChild(0).gameObject;
+            if (obj.transform.CompareTag("Block"))
+            {
+                BlockScript blockScript = obj.GetComponent<BlockScript>();
+                blockScript.MoveLine();
+                obj.transform.SetParent(Lines[blockScript.GetLineIndex()].transform);
+                obj.transform.position = new Vector3(obj.transform.position.x, Lines[blockScript.GetLineIndex()].transform.position.y, blockPosZ);
+            }
+            else if (obj.transform.CompareTag("Item"))
+            {
+                ItemScript itemScript = obj.GetComponent<ItemScript>();
+                itemScript.MoveLine();
+                obj.transform.SetParent(Lines[itemScript.GetLineIndex()].transform);
+                obj.transform.position = new Vector3(obj.transform.position.x, Lines[itemScript.GetLineIndex()].transform.position.y, blockPosZ);
+            }
         }
     }
 
@@ -268,7 +282,7 @@ public class PuzzleGame : MonoBehaviour
     public void ReStart()
     {
         //Ball
-        userStatus.ChangeHaveBallCount(0);
+        userStatus.ChangeHaveBallCount(1);
         userInput.ResetPos();
 
         //Block

@@ -136,6 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07adef1a8d6b254d9d94936b2cdb608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randomSeed: 0000000001000000020000000300000004000000
+  description: {fileID: 124696168578933235}
+  LineIndex: 0
 --- !u!1 &124696168578933245
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,24 +5,16 @@ using UnityEngine.UI;
 
 public class BlockScript : MonoBehaviour
 {
+    UserStatus userStatus;
     public Text CountText;
     private int HitCount = 0;
     [SerializeField] private int LineIndex = 0;
-    // Start is called before the first frame update
+
     void Start()
     {
+        userStatus = FindObjectOfType<UserStatus>();
         TextChange();
     }
-    /*
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ball"))
-        {
-            DecrementHitCount();
-            TextChange();
-            IsDestroy();
-        }
-    }*/
 
     public void OnBallHit()
     {
@@ -75,6 +67,7 @@ public class BlockScript : MonoBehaviour
         if (HitCount <= 0)
         {
             //Debug.Log("Destroy : " + this.gameObject.name);
+            userStatus.ScoreChangeOnBlockBreak();
             Destroy(this.gameObject);
         }
     }

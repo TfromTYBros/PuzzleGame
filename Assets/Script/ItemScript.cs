@@ -9,6 +9,9 @@ public class ItemScript : MonoBehaviour
     [SerializeField] int[] randomSeed = { 0, 1, 2, 3, 4 };
     public Text description;
 
+    /********Line********/
+    [SerializeField] private int LineIndex = 0;
+
     void Start()
     {
         userStatus = FindObjectOfType<UserStatus>();
@@ -21,6 +24,7 @@ public class ItemScript : MonoBehaviour
         if (collision.transform.CompareTag("Ball"))
         {
             Buffer();
+            userStatus.ChangeTextBallCount();
             Destroy(this.gameObject);
         }
     }
@@ -62,13 +66,30 @@ public class ItemScript : MonoBehaviour
 
     private void Buffer()
     {
-        if (GetRandomSeedTop() == 4)
-        {
-            userStatus.Item_Ballx2();
-        }
-        else
-        {
-            userStatus.Item_BallPlus();
-        }
+        userStatus.ItemSelect(GetRandomSeedTop());
+    }
+
+    /**********
+     *LineŠÖ˜A
+     **********/
+
+    public void MoveLine()
+    {
+        LineIndex++;
+    }
+
+    public int GetLineIndex()
+    {
+        return LineIndex;
+    }
+
+    public void SetLineIndex(int index)
+    {
+        LineIndex = index;
+    }
+
+    public string GetItemStatus()
+    {
+        return GetRandomSeedTop() == 4 ? "x2" : "+1";
     }
 }
