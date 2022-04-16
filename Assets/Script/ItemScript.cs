@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ItemScript : MonoBehaviour
 {
     UserStatus userStatus;
-    [SerializeField] int[] randomSeed = { 0, 1, 2, 3, 4 };
     public Text description;
 
     /********Line********/
@@ -15,8 +14,7 @@ public class ItemScript : MonoBehaviour
     void Start()
     {
         userStatus = FindObjectOfType<UserStatus>();
-        RandomSeedChange();
-        TextChange(GetRandomSeedTop());
+        TextChange();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -28,29 +26,10 @@ public class ItemScript : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    /***************************
-     *ゲッターセッターRandomSeed 
-     **************************/
 
-    private void RandomSeedChange()
+    private void TextChange()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            int value = Random.Range(0, 5);
-            int temp = randomSeed[i];
-            randomSeed[i] = randomSeed[value];
-            randomSeed[value] = temp;
-        }
-    }
-
-    private int GetRandomSeedTop()
-    {
-        return randomSeed[0];
-    }
-
-    private void TextChange(int value)
-    {
-        if (value == 4)
+        if (userStatus.IsGameLevel10())
         {
             description.text = "x2";
         }
@@ -66,7 +45,7 @@ public class ItemScript : MonoBehaviour
 
     private void Buffer()
     {
-        userStatus.ItemSelect(GetRandomSeedTop());
+        userStatus.ItemSelect();
     }
 
     /**********
@@ -88,8 +67,8 @@ public class ItemScript : MonoBehaviour
         LineIndex = index;
     }
 
-    public string GetItemStatus()
+    public string GetItemStatus(int gameLevel)
     {
-        return GetRandomSeedTop() == 4 ? "x2" : "+1";
+        return gameLevel % 5 == 0 ? "x2" : "+1";
     }
 }

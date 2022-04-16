@@ -6,6 +6,7 @@ public class PuzzleGame : MonoBehaviour
 {
     public GameObject[] Lines;
     [SerializeField] private List<int> randomSeed = new List<int> { 0, 1, 2, 3, 4 };
+    [SerializeField] private List<int> randomSeed3_5 = new List<int> { 3, 4, 5 };
 
     //*************Block***************//
     private readonly List<float> posXs = new List<float> { -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
@@ -24,6 +25,9 @@ public class PuzzleGame : MonoBehaviour
 
     //***********CleanUP**************//
     [SerializeField] private int destroyCount = 0;
+
+    //***********GAMEOVER**************//
+    public Fade fadeGameOver;
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
@@ -62,6 +66,17 @@ public class PuzzleGame : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             int value = Random.Range(0, 5);
+            int temp = randomSeed[i];
+            randomSeed[i] = randomSeed[value];
+            randomSeed[value] = temp;
+        }
+    }
+
+    private void RandomSeedChange3_5()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            int value = Random.Range(0, 3);
             int temp = randomSeed[i];
             randomSeed[i] = randomSeed[value];
             randomSeed[value] = temp;
@@ -116,7 +131,7 @@ public class PuzzleGame : MonoBehaviour
                 if (i == 0 && j == 0)
                 {
                     GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
-                    newItem.name = "Item" + newItem.GetComponent<ItemScript>().GetItemStatus();
+                    newItem.name = "Item" + newItem.GetComponent<ItemScript>().GetItemStatus(userStatus.GetGameLevel());
                     continue;
                 }
                 GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
@@ -205,7 +220,9 @@ public class PuzzleGame : MonoBehaviour
         }
         else
         {
-            RandomMakeBlocks(3);
+            RandomSeedChange3_5();
+            RandomMakeBlocks(randomSeed3_5[0]);
+            userStatus.ResetGameLevelUpCount();
             StartBallAngle();
         }
     }
@@ -221,6 +238,13 @@ public class PuzzleGame : MonoBehaviour
         //Debug.Log(randomSeed);
         for (int i = 0; i < value; i++)
         {
+            if (userStatus.GetGameLevelUpCount() != 0)
+            {
+                GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeed[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
+                newItem.name = "Item" + newItem.GetComponent<ItemScript>().GetItemStatus(userStatus.GetGameLevel());
+                userStatus.MinusGameLevelUpCount();
+                continue;
+            }
             GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
             newBlock.name = "Block" + GetBlockMakeCount();
             BlockScript blockScript = newBlock.GetComponent<BlockScript>();
@@ -265,6 +289,7 @@ public class PuzzleGame : MonoBehaviour
     private void StartGameOver()
     {
         state = GameState.GAMEOVER;
+        fadeGameOver.FadeIn(1);
         userInput.EnaGameOverPanel();
     }
 
@@ -289,6 +314,9 @@ public class PuzzleGame : MonoBehaviour
 
         //gameLevel
         userStatus.ChangeGameLevel(1);
+
+        //gameLevelUpCount
+        userStatus.ResetGameLevelUpCount();
 
         //makeCount
         ChangeBlockMakeCount(0);

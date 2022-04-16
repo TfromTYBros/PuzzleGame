@@ -49,3 +49,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Panel
+    uniqueID: 239406643
+    locked: 0
+  - name: Fade
+    uniqueID: 2873169949
+    locked: 0
+  - name: Object
+    uniqueID: 481480127
+    locked: 0

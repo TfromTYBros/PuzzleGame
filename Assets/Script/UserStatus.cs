@@ -13,6 +13,7 @@ public class UserStatus : MonoBehaviour
 
     /**********GameLevel**********/
     [SerializeField] private int gameLevel = 1;
+    [SerializeField] private int gameLevelUpCount = 0;
 
     /**********BlockBreak*********/
     [SerializeField] private int blockBreakPoint = 0;
@@ -102,11 +103,40 @@ public class UserStatus : MonoBehaviour
         if ((GetBlockBreakPoint() % 10) == 0 && GetBlockBreakPoint() != 0)
         {
             GameLevelUp();
+            PlusGameLevelUpcOunt();
         }
     }
     private void GameLevelUp()
     {
         gameLevel++;
+    }
+
+    public bool IsGameLevel10()
+    {
+        return gameLevel % 10 == 0;
+    }
+
+    /*****************
+     *GameLevelUpCount
+     *****************/
+
+    public void PlusGameLevelUpcOunt()
+    {
+        gameLevelUpCount++;
+    }
+
+    public void MinusGameLevelUpCount()
+    {
+        if (0 < gameLevelUpCount) gameLevelUpCount--;
+    }
+    public int GetGameLevelUpCount()
+    {
+        return gameLevelUpCount;
+    }
+
+    public void ResetGameLevelUpCount()
+    {
+        gameLevelUpCount = 0;
     }
 
     /***********
@@ -132,9 +162,9 @@ public class UserStatus : MonoBehaviour
      *Items
      ******/
 
-    public void ItemSelect(int index)
+    public void ItemSelect()
     {
-        if (index == 4) Item_Ballx2();
+        if (GetGameLevel() % 10 == 0) Item_Ballx2();
         else Item_BallPlus();
     }
 
