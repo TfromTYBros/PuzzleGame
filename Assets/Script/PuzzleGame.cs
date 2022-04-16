@@ -324,6 +324,9 @@ public class PuzzleGame : MonoBehaviour
         //Score
         userStatus.ScoreReset();
 
+        //Fade
+        fadeGameOver.FadeOut(1);
+
         //reStart
         StartGame();
     }
