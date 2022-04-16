@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PuzzleGame : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class PuzzleGame : MonoBehaviour
 
     //***********GAMEOVER**************//
     public Fade fadeGameOver;
+    public Text scoreOnGameOverText;
+    public Text gameLevelOnGameOverText;
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
@@ -290,6 +293,7 @@ public class PuzzleGame : MonoBehaviour
     {
         state = GameState.GAMEOVER;
         fadeGameOver.FadeIn(1);
+        TextChangeOnGAMEOVER();
         userInput.EnaGameOverPanel();
     }
 
@@ -329,6 +333,12 @@ public class PuzzleGame : MonoBehaviour
 
         //reStart
         StartGame();
+    }
+
+    private void TextChangeOnGAMEOVER()
+    {
+        scoreOnGameOverText.text = userStatus.GetScore().ToString();
+        gameLevelOnGameOverText.text = userStatus.GetGameLevel().ToString();
     }
 
     /********

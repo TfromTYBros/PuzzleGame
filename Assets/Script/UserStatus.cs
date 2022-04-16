@@ -40,7 +40,7 @@ public class UserStatus : MonoBehaviour
 
     public void ChangeTextBallCount()
     {
-        haveBallCountText.text = "BALL : " + GetHaveBallCount().ToString("000");
+        haveBallCountText.text = GetHaveBallCount().ToString();
     }
 
     public void BallCountReset()
@@ -76,7 +76,7 @@ public class UserStatus : MonoBehaviour
 
     private void ScoreTextChange()
     {
-        scoreText.text = "SCORE : " + score.ToString("00000000");
+        scoreText.text = score.ToString();
     }
 
     public void ScoreReset()
@@ -108,7 +108,7 @@ public class UserStatus : MonoBehaviour
     }
     private void GameLevelUp()
     {
-        gameLevel++;
+        if (gameLevel < 999) gameLevel++;
     }
 
     public bool IsGameLevel10()
