@@ -28,20 +28,8 @@ public class PuzzleGame : MonoBehaviour
     [SerializeField] private int destroyCount = 0;
 
     /*********GameLevelUp*********/
-    /*
-    List<Color> colorBox = new List<Color>();
-    Color blue = new Color(100.0f, 155.0f, 200.0f,0.0f);
-    Color deepBlue = new Color(100.0f, 100.0f, 200.0f ,0.0f);
-    Color purple = new Color(150.0f, 100.0f, 200.0f);
-    Color deepPurple = new Color(200.0f, 100.0f, 200.0f);
-    Color groundRed = new Color(200.0f, 100.0f, 100.0f);
-    Color ground = new Color(200.0f, 150.0f, 100.0f);
-    Color cream = new Color(200.0f, 200.0f, 100.0f);
-    Color creamGreen = new Color(150.0f, 200.0f, 100.0f);
-    Color mintGreen = new Color(100.0f, 100.0f, 135.0f);
-    Color lightBlue = new Color(100.0f, 200.0f, 200.0f);
-    */
     public Material[] materialBox = new Material[10];
+
 
     //***********GAMEOVER**************//
     public Fade fadeGameOver;
@@ -356,6 +344,9 @@ public class PuzzleGame : MonoBehaviour
 
         //Score
         userStatus.ScoreReset();
+
+        //MainCamera
+        MainCameraMaterialChange(0);
 
         //Fade
         fadeGameOver.FadeOut(1);

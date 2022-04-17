@@ -14,6 +14,7 @@ public class UserStatus : MonoBehaviour
     /**********GameLevel**********/
     [SerializeField] private int gameLevel = 1;
     [SerializeField] private int gameLevelUpCount = 0;
+    LevelUpTextAnime levelUpTextAnime;
 
     /**********BlockBreak*********/
     [SerializeField] private int blockBreakPoint = 0;
@@ -21,6 +22,7 @@ public class UserStatus : MonoBehaviour
     void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
+        levelUpTextAnime = FindObjectOfType<LevelUpTextAnime>();
         ChangeHaveBallCount(1);
     }
 
@@ -105,6 +107,7 @@ public class UserStatus : MonoBehaviour
             GameLevelUp();
             PlusGameLevelUpcOunt();
             puzzleGame.MainCameraMaterialChange(GetGameLevel() % 10);
+            levelUpTextAnime.GoAnime();
         }
     }
     private void GameLevelUp()
