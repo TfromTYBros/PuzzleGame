@@ -104,6 +104,7 @@ public class UserStatus : MonoBehaviour
         {
             GameLevelUp();
             PlusGameLevelUpcOunt();
+            puzzleGame.MainCameraMaterialChange(GetGameLevel() % 10);
         }
     }
     private void GameLevelUp()

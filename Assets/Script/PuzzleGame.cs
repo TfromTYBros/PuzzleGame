@@ -27,6 +27,22 @@ public class PuzzleGame : MonoBehaviour
     //***********CleanUP**************//
     [SerializeField] private int destroyCount = 0;
 
+    /*********GameLevelUp*********/
+    /*
+    List<Color> colorBox = new List<Color>();
+    Color blue = new Color(100.0f, 155.0f, 200.0f,0.0f);
+    Color deepBlue = new Color(100.0f, 100.0f, 200.0f ,0.0f);
+    Color purple = new Color(150.0f, 100.0f, 200.0f);
+    Color deepPurple = new Color(200.0f, 100.0f, 200.0f);
+    Color groundRed = new Color(200.0f, 100.0f, 100.0f);
+    Color ground = new Color(200.0f, 150.0f, 100.0f);
+    Color cream = new Color(200.0f, 200.0f, 100.0f);
+    Color creamGreen = new Color(150.0f, 200.0f, 100.0f);
+    Color mintGreen = new Color(100.0f, 100.0f, 135.0f);
+    Color lightBlue = new Color(100.0f, 200.0f, 200.0f);
+    */
+    public Material[] materialBox = new Material[10];
+
     //***********GAMEOVER**************//
     public Fade fadeGameOver;
     public Text scoreOnGameOverText;
@@ -44,6 +60,7 @@ public class PuzzleGame : MonoBehaviour
 
     void Start()
     {
+        SetColorBox();
         userInput = FindObjectOfType<UserInput>();
         userStatus = FindObjectOfType<UserStatus>();
         state = GameState.START_GAME;
@@ -110,7 +127,15 @@ public class PuzzleGame : MonoBehaviour
     {
         return destroyCount;
     }
+    private void SetColorBox()
+    {
+        //colorBox = new List<Color> { blue,deepBlue,purple,deepPurple,groundRed,ground,cream,creamGreen,mintGreen,lightBlue};
+    }
 
+    public Material GetMaterialInMaterialBox(int index)
+    {
+        return materialBox[index];
+    }
 
     /************
      *START_GAME
@@ -188,10 +213,14 @@ public class PuzzleGame : MonoBehaviour
             yield return ballMakeTimeDistance;
             GameObject ball = MakeBall();
             BallScript ballScript = ball.GetComponent<BallScript>();
-            ballScript.SetSpeedXY(userInput.GetWay() / 10,0.1f);
+            ballScript.SetSpeedXY(userInput.GetWay() / 13,0.1f);
             ballScript.Move();
             ballCount--;
         }
+    }
+    public void MainCameraMaterialChange(int gameLevel)
+    {
+        Camera.main.GetComponent<Skybox>().material = GetMaterialInMaterialBox(gameLevel);
     }
 
     /*********
