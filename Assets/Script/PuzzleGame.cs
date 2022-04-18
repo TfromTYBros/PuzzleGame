@@ -201,7 +201,7 @@ public class PuzzleGame : MonoBehaviour
             yield return ballMakeTimeDistance;
             GameObject ball = MakeBall();
             BallScript ballScript = ball.GetComponent<BallScript>();
-            ballScript.SetSpeedXY(userInput.GetWay() / 13,0.1f);
+            ballScript.SetSpeedXY(userInput.GetWay() / 15.0f, 0.1f);
             ballScript.Move();
             ballCount--;
         }

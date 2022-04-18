@@ -8,6 +8,6 @@ public class LevelUpTextAnime : MonoBehaviour
     public void GoAnime()
     {
         levelUpAnime.SetTrigger("LevelUp");
-        Debug.Log("GoAnime");
+        //Debug.Log("GoAnime");
     }
 }
