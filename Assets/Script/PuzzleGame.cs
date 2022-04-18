@@ -229,6 +229,7 @@ public class PuzzleGame : MonoBehaviour
     private void StartCleanUp()
     {
         //resets
+        userInput.ApplyDicidePos();
         userInput.BoolGroundTouchReset();
         ResetDestroyCount();
 

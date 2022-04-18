@@ -7,6 +7,7 @@ public class UserInput : MonoBehaviour
     PuzzleGame puzzleGame;
     /*********Pos*********/
     public Transform touchGroundPos;
+    public Transform touchGroundPosTemp;
     private readonly Vector3 ballPosOnStartGame = new Vector3(0.0f, -3.5f, -5.0f);
     [SerializeField] private bool groundTouched = false;
     public GameObject ballShadow;
@@ -145,10 +146,10 @@ public class UserInput : MonoBehaviour
         if (!BoolGetGroundTouch())
         {
             Vector3 touchPos = new Vector3(x, touchGroundPos.position.y, touchGroundPos.position.z);
-            touchGroundPos.position = touchPos;
+            touchGroundPosTemp.position = touchPos;
 
             //ballShadow
-            ballShadow.transform.position = touchPos;
+            ballShadow.transform.position = touchGroundPosTemp.position;
             EnaBallShadow();
 
             //í˜ÇﬂêÿÇË
@@ -159,6 +160,11 @@ public class UserInput : MonoBehaviour
     private void EnaBallShadow()
     {
         ballShadow.SetActive(true);
+    }
+
+    public void ApplyDicidePos()
+    {
+        guideBall.transform.position = touchGroundPosTemp.position;
     }
 
     /**********
