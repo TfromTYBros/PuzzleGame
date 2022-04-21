@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UserInput : MonoBehaviour
 {
     PuzzleGame puzzleGame;
+    UserStatus userStatus;
     /*********Pos*********/
     public Transform touchGroundPos;
     public Transform touchGroundPosTemp;
@@ -22,13 +24,12 @@ public class UserInput : MonoBehaviour
     public GameObject gameOverPanel;
 
     /*********Parts********/
-    private readonly float NOTHING = 0.0f;
     private readonly float REVERSE = -1.0f;
 
     void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
-        
+        userStatus = FindObjectOfType<UserStatus>();
     }
 
     void Update()
@@ -39,6 +40,7 @@ public class UserInput : MonoBehaviour
             {
                 //Debug.Log("Click from BALL_ANGLE");
                 DisGuideBall();
+                userStatus.DisHaveBallCountText();
                 BoolGroundTouchReset();
                 puzzleGame.Shot();
                 puzzleGame.StartMovingNow();
@@ -152,6 +154,9 @@ public class UserInput : MonoBehaviour
             ballShadow.transform.position = touchGroundPosTemp.position;
             EnaBallShadow();
 
+            //ballCountText
+            userStatus.DicideBallCountTextPos(touchPos.x);
+
             //í˜ÇﬂêÿÇË
             GroundTouch();
         }
@@ -161,7 +166,6 @@ public class UserInput : MonoBehaviour
     {
         ballShadow.SetActive(true);
     }
-
     public void ApplyDicidePos()
     {
         guideBall.transform.position = touchGroundPosTemp.position;
@@ -171,7 +175,7 @@ public class UserInput : MonoBehaviour
     *OnGAMEOVER
     ***********/
 
-    public void ResetPos()
+    public void ResetTouchRroundPos()
     {
         touchGroundPos.position = ballPosOnStartGame;
     }

@@ -33,7 +33,7 @@ public class PuzzleGame : MonoBehaviour
 
     //***********GAMEOVER**************//
     public Fade fadeGameOver;
-    public Text scoreOnGameOverText;
+    public Text blocksOnGameOverText;
     public Text gameLevelOnGameOverText;
 
     //***********GameState**************//
@@ -169,6 +169,7 @@ public class PuzzleGame : MonoBehaviour
         state = GameState.BALL_ANGLE;
         userInput.DisBallShadow();
         userInput.EnaGuideBall();
+        userStatus.EnaHaveBallCountText();
     }
 
     /***********
@@ -319,7 +320,8 @@ public class PuzzleGame : MonoBehaviour
     {
         //Ball
         userStatus.BallCountReset();
-        userInput.ResetPos();
+        userInput.ResetTouchRroundPos();
+        userStatus.ResetHaveBallCount();
 
         //Block
         foreach (GameObject line in Lines)
@@ -343,14 +345,14 @@ public class PuzzleGame : MonoBehaviour
         //makeCount
         ChangeBlockMakeCount(0);
 
-        //Score
-        userStatus.ScoreReset();
-
         //MainCamera
         MainCameraMaterialChange(0);
 
         //Fade
         fadeGameOver.FadeOut(1);
+
+        //Slider
+        userStatus.ResetSlider();
 
         //reStart
         StartGame();
@@ -358,7 +360,7 @@ public class PuzzleGame : MonoBehaviour
 
     private void TextChangeOnGAMEOVER()
     {
-        scoreOnGameOverText.text = userStatus.GetScore().ToString();
+        blocksOnGameOverText.text = userStatus.GetBlockBreakPoint().ToString();
         gameLevelOnGameOverText.text = userStatus.GetGameLevel().ToString();
     }
 

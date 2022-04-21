@@ -22,7 +22,7 @@ public class ItemScript : MonoBehaviour
         if (collision.transform.CompareTag("Ball"))
         {
             Buffer();
-            userStatus.ChangeTextBallCount();
+            userStatus.ChangeTextHaveBallCount();
             Destroy(this.gameObject);
         }
     }

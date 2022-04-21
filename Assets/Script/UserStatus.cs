@@ -10,20 +10,28 @@ public class UserStatus : MonoBehaviour
     public Text scoreText;
     [SerializeField] private int haveBallCount = 0;
     public Text haveBallCountText;
+    private readonly Vector3 haveBallCountPosOnStartGame = new Vector3(1.0f, -3.5f, -5.0f);
 
     /**********GameLevel**********/
     [SerializeField] private int gameLevel = 1;
     [SerializeField] private int gameLevelUpCount = 0;
     LevelUpTextAnime levelUpTextAnime;
+    public Slider gameLevelUpSlider;
 
     /**********BlockBreak*********/
     [SerializeField] private int blockBreakPoint = 0;
+
+    /************Parts**************/
+    private readonly float ZERO = 0.0f;
+    private readonly float ONE = 1.0f;
 
     void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
         levelUpTextAnime = FindObjectOfType<LevelUpTextAnime>();
         ChangeHaveBallCount(1);
+        ChangeTextHaveBallCount();
+        SetBallCountTextPosOnStartGame();
     }
 
     /*****
@@ -40,51 +48,55 @@ public class UserStatus : MonoBehaviour
         return haveBallCount;
     }
 
-    public void ChangeTextBallCount()
+    public void ChangeTextHaveBallCount()
     {
-        haveBallCountText.text = GetHaveBallCount().ToString();
+        haveBallCountText.text = "x " + GetHaveBallCount().ToString();
     }
 
     public void BallCountReset()
     {
         ChangeHaveBallCount(1);
-        ChangeTextBallCount();
+        ChangeTextHaveBallCount();
+    }
+    public void EnaHaveBallCountText()
+    {
+        haveBallCountText.transform.gameObject.SetActive(true);
     }
 
-    /******
-     *Score
-    *******/
-    private void ChangeScore(int newScore)
+    public void DisHaveBallCountText()
     {
-        score = newScore;
-        if (score > 99999999) score = 9999999;
+        haveBallCountText.transform.gameObject.SetActive(false);
+    }
+    public void SetBallCountTextPosOnStartGame()
+    {
+        haveBallCountText.transform.position = haveBallCountPosOnStartGame;
+    }
+    public void DicideBallCountTextPos(float x)
+    {
+        if (x < ZERO) x += ONE;
+        else x -= ONE;
+        haveBallCountText.transform.position = new Vector3(x, haveBallCountText.transform.position.y, haveBallCountText.transform.position.z);
     }
 
-    public int GetScore()
+    public void ResetHaveBallCount()
     {
-        return score;
+        SetBallCountTextPosOnStartGame();
+        ChangeHaveBallCount(1);
+        ChangeTextHaveBallCount();
     }
 
-    public void ScoreChangeOnBlockBreak()
+    /*******
+     *Slider
+     *******/
+
+    public void ChangeSlider(int breakCount)
     {
-        ScoreCal();
-        ScoreTextChange();
+        gameLevelUpSlider.value = breakCount % 10;
     }
 
-    private void ScoreCal()
+    public void ResetSlider()
     {
-        ChangeScore(GetGameLevel() * 1 + GetScore());
-    }
-
-    private void ScoreTextChange()
-    {
-        scoreText.text = score.ToString();
-    }
-
-    public void ScoreReset()
-    {
-        ChangeScore(0);
-        ScoreTextChange();
+        gameLevelUpSlider.value = 0;
     }
 
     /**********

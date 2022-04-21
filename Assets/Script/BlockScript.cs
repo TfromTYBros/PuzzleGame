@@ -32,7 +32,8 @@ public class BlockScript : MonoBehaviour
 
     public int RandomSeed(int gameLevel)
     {
-        return Random.Range(gameLevel, gameLevel + 2);
+        //return Random.Range(gameLevel, gameLevel + 2);
+        return gameLevel;
     }
 
     private void DecrementHitCount()
@@ -52,8 +53,8 @@ public class BlockScript : MonoBehaviour
         if (HitCount == 0)
         {
             //Debug.Log("Destroy : " + this.gameObject.name);
-            userStatus.ScoreChangeOnBlockBreak();
             userStatus.PlusBlockBreakPoint();
+            userStatus.ChangeSlider(userStatus.GetBlockBreakPoint() % 10);
             userStatus.IsGameLevelUp();
             Destroy(this.gameObject);
         }
