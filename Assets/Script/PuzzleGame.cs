@@ -36,6 +36,9 @@ public class PuzzleGame : MonoBehaviour
     public Text blocksOnGameOverText;
     public Text gameLevelOnGameOverText;
 
+    //***********GAMESET**************//
+    public Fade fadeGameSet;
+
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
     public GameState state;
@@ -372,6 +375,7 @@ public class PuzzleGame : MonoBehaviour
     private void StartGameSet()
     {
         state = GameState.GAMESET;
+        GetComponent<LevelUpTextAnime>().CancelAnime();
     }
 
 }
