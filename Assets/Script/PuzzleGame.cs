@@ -311,6 +311,7 @@ public class PuzzleGame : MonoBehaviour
     private void StartGameOver()
     {
         state = GameState.GAMEOVER;
+        GetComponent<LevelUpTextAnime>().CancelAnime();
         fadeGameOver.FadeIn(1);
         TextChangeOnGAMEOVER();
         userInput.EnaGameOverPanel();
