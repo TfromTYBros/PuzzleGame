@@ -30,7 +30,6 @@ public class PuzzleGame : MonoBehaviour
     /*********GameLevelUp*********/
     public Material[] materialBox = new Material[10];
 
-
     //***********GAMEOVER**************//
     public Fade fadeGameOver;
     public Text blocksOnGameOverText;
@@ -38,10 +37,15 @@ public class PuzzleGame : MonoBehaviour
 
     //***********GAMESET**************//
     public Fade fadeGameSet;
+    WaitForSeconds gameSetSeconds = new WaitForSeconds(4.6f);
+    WaitForSeconds cancelAnimeSeconds = new WaitForSeconds(6.0f);
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
     public GameState state;
+
+    //*************Anime*************//
+    AnimesScript animesScript;
 
     //***********UserInput*************//
     UserInput userInput;
@@ -51,9 +55,9 @@ public class PuzzleGame : MonoBehaviour
 
     void Start()
     {
-        SetColorBox();
         userInput = FindObjectOfType<UserInput>();
         userStatus = FindObjectOfType<UserStatus>();
+        animesScript = FindObjectOfType<AnimesScript>();
         state = GameState.START_GAME;
         StartGame();
     }
@@ -117,10 +121,6 @@ public class PuzzleGame : MonoBehaviour
     public int GetDestroyCount()
     {
         return destroyCount;
-    }
-    private void SetColorBox()
-    {
-        //colorBox = new List<Color> { blue,deepBlue,purple,deepPurple,groundRed,ground,cream,creamGreen,mintGreen,lightBlue};
     }
 
     public Material GetMaterialInMaterialBox(int index)
@@ -221,6 +221,7 @@ public class PuzzleGame : MonoBehaviour
 
     public void IsStartCleanUp()
     {
+        if (state == GameState.GAMESET) return;
         DestroyCountPlus();
 
         if (GetCopy() == GetDestroyCount())
@@ -314,7 +315,7 @@ public class PuzzleGame : MonoBehaviour
     private void StartGameOver()
     {
         state = GameState.GAMEOVER;
-        GetComponent<LevelUpTextAnime>().CancelAnime();
+        animesScript.CancelAnimeToLevelUp();
         fadeGameOver.FadeIn(1);
         TextChangeOnGAMEOVER();
         userInput.EnaGameOverPanel();
@@ -354,6 +355,7 @@ public class PuzzleGame : MonoBehaviour
 
         //Fade
         fadeGameOver.FadeOut(1);
+        fadeGameSet.FadeOut(1);
 
         //Slider
         userStatus.ResetSlider();
@@ -372,10 +374,26 @@ public class PuzzleGame : MonoBehaviour
     *GAME_SET
     *********/
 
-    private void StartGameSet()
+    public void StartGameSet()
     {
         state = GameState.GAMESET;
-        GetComponent<LevelUpTextAnime>().CancelAnime();
+        StopAllCoroutines();
+        animesScript.CancelAnimeToLevelUp();
+        animesScript.GoAnimeOnGAMESET();
+        StartCoroutine(CancelGameSetAnime());
+        StartCoroutine(EnaPanelOnGAMESET());
     }
 
+    private IEnumerator EnaPanelOnGAMESET()
+    {
+        yield return gameSetSeconds;
+        fadeGameSet.FadeIn(1);
+        userInput.EnaGameSetPanel();
+    }
+
+    private IEnumerator CancelGameSetAnime()
+    {
+        yield return cancelAnimeSeconds;
+        animesScript.CancelAnimeToGameSet();
+    }
 }

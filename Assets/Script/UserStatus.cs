@@ -15,11 +15,13 @@ public class UserStatus : MonoBehaviour
     /**********GameLevel**********/
     [SerializeField] private int gameLevel = 1;
     [SerializeField] private int gameLevelUpCount = 0;
-    LevelUpTextAnime levelUpTextAnime;
     public Slider gameLevelUpSlider;
 
     /**********BlockBreak*********/
     [SerializeField] private int blockBreakPoint = 0;
+
+    /************Anime*************/
+    AnimesScript animesScript;
 
     /************Parts**************/
     private readonly float ZERO = 0.0f;
@@ -28,7 +30,7 @@ public class UserStatus : MonoBehaviour
     void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
-        levelUpTextAnime = FindObjectOfType<LevelUpTextAnime>();
+        animesScript = FindObjectOfType<AnimesScript>();
         ChangeHaveBallCount(1);
         ChangeTextHaveBallCount();
         SetBallCountTextPosOnStartGame();
@@ -117,9 +119,14 @@ public class UserStatus : MonoBehaviour
         if ((GetBlockBreakPoint() % 10) == 0 && GetBlockBreakPoint() != 0)
         {
             GameLevelUp();
+            if (IsGAMESET())
+            {
+                puzzleGame.StartGameSet();
+                return;
+            }
             PlusGameLevelUpcOunt();
             puzzleGame.MainCameraMaterialChange(GetGameLevel() % 10);
-            levelUpTextAnime.GoAnime();
+            animesScript.GoAnimeOnLevelUp();
         }
     }
     private void GameLevelUp()
@@ -130,6 +137,10 @@ public class UserStatus : MonoBehaviour
     public bool IsGameLevel10()
     {
         return gameLevel % 10 == 0;
+    }
+    private bool IsGAMESET()
+    {
+        return GetGameLevel() >= 10;
     }
 
     /*****************

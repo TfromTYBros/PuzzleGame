@@ -7,11 +7,15 @@ TagManager:
   - Block
   - Ball
   - Ground
-  - Left
-  - Right
-  - Up
-  - Down
   - Item
+  - WallLeft
+  - WallRight
+  - WallUp
+  - BlockUp
+  - BlockDown
+  - BlockLeft
+  - WallDown
+  - BlockRight
   layers:
   - Default
   - TransparentFX

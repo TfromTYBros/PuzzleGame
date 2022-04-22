@@ -20,8 +20,11 @@ public class UserInput : MonoBehaviour
     private readonly float MOUSE_LIMIT = 1.5f;
     [SerializeField] float way = 0.0f;
 
-    /*********GameOver********/
+    /*********GAMEOVER********/
     public GameObject gameOverPanel;
+
+    /********GAMESET**********/
+    public GameObject gameSetPanel;
 
     /*********Parts********/
     private readonly float REVERSE = -1.0f;
@@ -48,6 +51,11 @@ public class UserInput : MonoBehaviour
             else if (puzzleGame.state == PuzzleGame.GameState.GAMEOVER)
             {
                 DisGameOverPanel();
+                puzzleGame.ReStart();
+            }
+            else if (puzzleGame.state == PuzzleGame.GameState.GAMESET && IsEnaGameSetPanel())
+            {
+                DisGameSetPanel();
                 puzzleGame.ReStart();
             }
         }
@@ -91,6 +99,17 @@ public class UserInput : MonoBehaviour
     private void DisGameOverPanel()
     {
         gameOverPanel.SetActive(false);
+    }
+
+    public void EnaGameSetPanel()
+    {
+        //Debug.Log("EnaGameSetPanel");
+        gameSetPanel.SetActive(true);
+    }
+
+    private void DisGameSetPanel()
+    {
+        gameSetPanel.SetActive(false);
     }
 
     /************
@@ -178,5 +197,14 @@ public class UserInput : MonoBehaviour
     public void ResetTouchRroundPos()
     {
         touchGroundPos.position = ballPosOnStartGame;
+    }
+
+    /**********
+     *OnGAMESET
+     **********/
+
+    private bool IsEnaGameSetPanel()
+    {
+        return gameSetPanel.activeSelf;
     }
 }

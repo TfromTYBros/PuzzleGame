@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4916965780106709678}
   m_Layer: 5
   m_Name: Down
-  m_TagString: Down
+  m_TagString: BlockDown
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 8020789179436902884}
   m_Layer: 5
   m_Name: Up
-  m_TagString: Up
+  m_TagString: BlockUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 640920340767386735}
   m_Layer: 5
   m_Name: Left
-  m_TagString: Left
+  m_TagString: BlockLeft
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -766,7 +766,7 @@ GameObject:
   - component: {fileID: 8923121130251460851}
   m_Layer: 5
   m_Name: Right
-  m_TagString: Right
+  m_TagString: BlockRight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
