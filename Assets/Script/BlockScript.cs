@@ -6,18 +6,21 @@ using UnityEngine.UI;
 public class BlockScript : MonoBehaviour
 {
     UserStatus userStatus;
+    Animator animator;
     public Text CountText;
     private int HitCount = 0;
     [SerializeField] private int LineIndex = 0;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         userStatus = FindObjectOfType<UserStatus>();
         TextChange();
     }
 
     public void OnBallHit()
     {
+        animator.SetTrigger("Hit");
         DecrementHitCount();
         TextChange();
         IsDestroy();
@@ -56,12 +59,24 @@ public class BlockScript : MonoBehaviour
             userStatus.PlusBlockBreakPoint();
             userStatus.ChangeSlider(userStatus.GetBlockBreakPoint() % 10);
             userStatus.IsGameLevelUp();
-            Destroy(this.gameObject);
+            ThisBlockDestroy();
         }
         else if (HitCount < 0)
         {
-            Destroy(this.gameObject);
+            ThisBlockDestroy();
         }
+    }
+
+    private void ThisBlockDestroy()
+    {
+        GetComponent<Rigidbody2D>().
+        StartCoroutine(DelayDestroy());
+    }
+
+    private IEnumerator DelayDestroy()
+    {
+        yield return userStatus.delayToDestroy;
+        Destroy(this.gameObject);
     }
 
     public void SetLineIndex(int lineIndex)

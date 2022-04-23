@@ -37,7 +37,8 @@ public class PuzzleGame : MonoBehaviour
 
     //***********GAMESET**************//
     public Fade fadeGameSet;
-    WaitForSeconds gameSetSeconds = new WaitForSeconds(4.6f);
+    //WaitForSeconds gameSetSeconds = new WaitForSeconds(4.6f);
+    WaitForSeconds gameSetSeconds = new WaitForSeconds(3.6f);
     WaitForSeconds cancelAnimeSeconds = new WaitForSeconds(6.0f);
 
     //***********GameState**************//
