@@ -105,6 +105,11 @@ public class BallScript : MonoBehaviour
             //Debug.Log("DownTouch" + this.gameObject.name);
             GoUp();
         }
+        if (collision.transform.CompareTag("Block"))
+        {
+            DicideBallAngle(collision.transform.position);
+        }
+        /*
         if (collision.transform.CompareTag("BlockRight"))
         {
             GoRight();
@@ -119,6 +124,37 @@ public class BallScript : MonoBehaviour
         }
         if (collision.transform.CompareTag("BlockDown"))
         {
+            GoDown();
+        }*/
+    }
+
+    private void DicideBallAngle(Vector3 block)
+    {
+        Vector3 result = this.transform.position - block;
+        Debug.Log(result);
+        /****
+         *   +1
+         *-1 0 +1
+         *   -1
+         *****/
+        if (0.5f <= result.x)
+        {
+            Debug.Log("Right");
+            GoRight();
+        }
+        else if (result.x <= -0.5f)
+        {
+            Debug.Log("Left");
+            GoLeft();
+        }
+        else if (0.5f <= result.y)
+        {
+            Debug.Log("Up");
+            GoUp();
+        }
+        else if (result.y <= -0.5f)
+        {
+            Debug.Log("Down");
             GoDown();
         }
     }

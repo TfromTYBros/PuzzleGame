@@ -10,7 +10,7 @@ public class BlockScript : MonoBehaviour
     public Text countText;
     private int hitCount = 0;
     [SerializeField] private int lineIndex = 0;
-    public GameObject[] edges;
+    //public GameObject[] edges;
 
     void Start()
     {
@@ -92,10 +92,11 @@ public class BlockScript : MonoBehaviour
     private void DisEdgeRigid()
     {
         this.transform.GetComponent<Rigidbody2D>().simulated = false;
+        /*
         for (int i = 0; i < 4; i++)
         {
             edges[i].GetComponent<Rigidbody2D>().simulated = false;
-        }
+        }*/
     }
 
     private void GoDestroyAnime()
