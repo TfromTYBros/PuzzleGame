@@ -344,6 +344,7 @@ public class PuzzleGame : MonoBehaviour
 
         //gameLevel
         userStatus.ChangeGameLevel(1);
+        userStatus.ChangeGameLevelText();
 
         //gameLevelUpCount
         userStatus.ResetGameLevelUpCount();

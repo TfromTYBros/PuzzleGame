@@ -34,7 +34,6 @@ public class BlockScript : MonoBehaviour
 
     public void OnBallHit()
     {
-        //if (GetHitCount() >= 2)animator.SetTrigger("Hit");
         DecrementHitCount();
         TextChange();
         IsDestroy();
@@ -49,7 +48,6 @@ public class BlockScript : MonoBehaviour
 
     public int RandomSeed(int gameLevel)
     {
-        //return Random.Range(gameLevel, gameLevel + 2);
         return gameLevel;
     }
 
@@ -92,11 +90,6 @@ public class BlockScript : MonoBehaviour
     private void DisEdgeRigid()
     {
         this.transform.GetComponent<Rigidbody2D>().simulated = false;
-        /*
-        for (int i = 0; i < 4; i++)
-        {
-            edges[i].GetComponent<Rigidbody2D>().simulated = false;
-        }*/
     }
 
     private void GoDestroyAnime()

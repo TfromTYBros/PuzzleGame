@@ -9,7 +9,7 @@ public class BallScript : MonoBehaviour
     [SerializeField] bool plusY = true;
     [SerializeField] private float speedX = 0.0f;
     [SerializeField] private float speedY = 0.0f;
-
+    private readonly float edge = 0.5f;
     private void FixedUpdate()
     {
         if (moveStart)
@@ -109,50 +109,28 @@ public class BallScript : MonoBehaviour
         {
             DicideBallAngle(collision.transform.position);
         }
-        /*
-        if (collision.transform.CompareTag("BlockRight"))
-        {
-            GoRight();
-        }
-        if (collision.transform.CompareTag("BlockLeft"))
-        {
-            GoLeft();
-        }
-        if (collision.transform.CompareTag("BlockUp"))
-        {
-            GoUp();
-        }
-        if (collision.transform.CompareTag("BlockDown"))
-        {
-            GoDown();
-        }*/
     }
 
     private void DicideBallAngle(Vector3 block)
     {
         Vector3 result = this.transform.position - block;
-        Debug.Log(result);
-        /****
-         *   +1
-         *-1 0 +1
-         *   -1
-         *****/
-        if (0.5f <= result.x)
+        //Debug.Log(result);
+        if (edge <= result.x)
         {
             Debug.Log("Right");
             GoRight();
         }
-        else if (result.x <= -0.5f)
+        else if (result.x <= -edge)
         {
             Debug.Log("Left");
             GoLeft();
         }
-        else if (0.5f <= result.y)
+        else if (edge <= result.y)
         {
             Debug.Log("Up");
             GoUp();
         }
-        else if (result.y <= -0.5f)
+        else if (result.y <= -edge)
         {
             Debug.Log("Down");
             GoDown();

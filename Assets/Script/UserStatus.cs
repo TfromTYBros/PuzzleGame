@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class UserStatus : MonoBehaviour
 {
-    PuzzleGame puzzleGame;
-    [SerializeField] private int score = 0;
-    public Text scoreText;
+    /********HaveBallCount*********/
     [SerializeField] private int haveBallCount = 0;
     public Text haveBallCountText;
     private readonly Vector3 haveBallCountPosOnStartGame = new Vector3(1.0f, -3.5f, -5.0f);
@@ -16,6 +14,7 @@ public class UserStatus : MonoBehaviour
     [SerializeField] private int gameLevel = 1;
     [SerializeField] private int gameLevelUpCount = 0;
     public Slider gameLevelUpSlider;
+    public Text gameLevelText;
 
     /**********BlockBreak*********/
     [SerializeField] private int blockBreakPoint = 0;
@@ -26,6 +25,7 @@ public class UserStatus : MonoBehaviour
     AnimesScript animesScript;
 
     /************Parts**************/
+    PuzzleGame puzzleGame;
     private readonly float ZERO = 0.0f;
     private readonly float ONE = 1.0f;
 
@@ -36,6 +36,7 @@ public class UserStatus : MonoBehaviour
         ChangeHaveBallCount(1);
         ChangeTextHaveBallCount();
         SetBallCountTextPosOnStartGame();
+        ChangeGameLevelText();
     }
 
     /*****
@@ -121,6 +122,7 @@ public class UserStatus : MonoBehaviour
         if ((GetBlockBreakPoint() % 10) == 0 && GetBlockBreakPoint() != 0)
         {
             GameLevelUp();
+            ChangeGameLevelText();
             if (IsGAMESET())
             {
                 puzzleGame.StartGameSet();
@@ -143,6 +145,12 @@ public class UserStatus : MonoBehaviour
     private bool IsGAMESET()
     {
         return GetGameLevel() >= 10;
+    }
+
+    public void ChangeGameLevelText()
+    {
+        if (GetGameLevel() != 10) gameLevelText.text = "LEVEL " + GetGameLevel().ToString();
+        else gameLevelText.text = "CLEAR!!";
     }
 
     /*****************
