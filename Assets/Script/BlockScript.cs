@@ -7,9 +7,10 @@ public class BlockScript : MonoBehaviour
 {
     UserStatus userStatus;
     Animator animator;
-    public Text CountText;
-    private int HitCount = 0;
-    [SerializeField] private int LineIndex = 0;
+    public Text countText;
+    private int hitCount = 0;
+    [SerializeField] private int lineIndex = 0;
+    public GameObject[] edges;
 
     void Start()
     {
@@ -18,9 +19,22 @@ public class BlockScript : MonoBehaviour
         TextChange();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            OnBallHit();
+        }
+    }
+
+    private int GetHitCount()
+    {
+        return hitCount;
+    }
+
     public void OnBallHit()
     {
-        animator.SetTrigger("Hit");
+        //if (GetHitCount() >= 2)animator.SetTrigger("Hit");
         DecrementHitCount();
         TextChange();
         IsDestroy();
@@ -30,7 +44,7 @@ public class BlockScript : MonoBehaviour
     {
         int value = RandomSeed(gameLevel);
         //Debug.Log("SetHitCount : " + value);
-        HitCount = value;
+        hitCount = value;
     }
 
     public int RandomSeed(int gameLevel)
@@ -42,18 +56,18 @@ public class BlockScript : MonoBehaviour
     private void DecrementHitCount()
     {
         //Debug.Log("DecrementHitCount");
-        HitCount--;
+        if (1 <= GetHitCount()) hitCount--;
     }
 
     private void TextChange()
     {
-        CountText.text = HitCount.ToString();
+        countText.text = GetHitCount().ToString();
     }
 
     private void IsDestroy()
     {
         //Debug.Log("IsDestroy");
-        if (HitCount == 0)
+        if (hitCount == 0)
         {
             //Debug.Log("Destroy : " + this.gameObject.name);
             userStatus.PlusBlockBreakPoint();
@@ -61,7 +75,7 @@ public class BlockScript : MonoBehaviour
             userStatus.IsGameLevelUp();
             ThisBlockDestroy();
         }
-        else if (HitCount < 0)
+        else if (hitCount < 0)
         {
             ThisBlockDestroy();
         }
@@ -69,8 +83,24 @@ public class BlockScript : MonoBehaviour
 
     private void ThisBlockDestroy()
     {
-        GetComponent<Rigidbody2D>().
+        DisEdgeRigid();
+        this.gameObject.transform.SetParent(userStatus.trashBox.transform);
+        GoDestroyAnime();
         StartCoroutine(DelayDestroy());
+    }
+
+    private void DisEdgeRigid()
+    {
+        this.transform.GetComponent<Rigidbody2D>().simulated = false;
+        for (int i = 0; i < 4; i++)
+        {
+            edges[i].GetComponent<Rigidbody2D>().simulated = false;
+        }
+    }
+
+    private void GoDestroyAnime()
+    {
+        animator.SetTrigger("Destroy");
     }
 
     private IEnumerator DelayDestroy()
@@ -79,18 +109,18 @@ public class BlockScript : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void SetLineIndex(int lineIndex)
+    public void SetLineIndex(int Index)
     {
-        LineIndex = lineIndex;
+        lineIndex = Index;
     }
 
     public int GetLineIndex()
     {
-        return LineIndex;
+        return lineIndex;
     }
 
     public void MoveLine()
     {
-        LineIndex++;
+        lineIndex++;
     }
 }

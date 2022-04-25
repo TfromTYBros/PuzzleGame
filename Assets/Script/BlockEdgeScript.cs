@@ -9,7 +9,7 @@ public class BlockEdgeScript : MonoBehaviour
     {
         if (collision.transform.CompareTag("Ball"))
         {
-            parentBlock.GetComponent<BlockScript>().OnBallHit();
+            //parentBlock.GetComponent<BlockScript>().OnBallHit();
         }
     }
 }

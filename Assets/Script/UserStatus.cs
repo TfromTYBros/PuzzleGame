@@ -20,7 +20,7 @@ public class UserStatus : MonoBehaviour
     /**********BlockBreak*********/
     [SerializeField] private int blockBreakPoint = 0;
     public GameObject trashBox;
-    public WaitForSeconds delayToDestroy = new WaitForSeconds(1.0f);
+    public WaitForSeconds delayToDestroy = new WaitForSeconds(0.5f);
 
     /************Anime*************/
     AnimesScript animesScript;
