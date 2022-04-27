@@ -29,14 +29,7 @@ public class ItemScript : MonoBehaviour
 
     private void TextChange()
     {
-        if (userStatus.IsGameLevel10())
-        {
-            description.text = "x2";
-        }
-        else
-        {
-            description.text = "+1";
-        }
+        description.text = GetItemStatus(userStatus.GetGameLevel());
     }
 
     /**********
@@ -46,6 +39,11 @@ public class ItemScript : MonoBehaviour
     private void Buffer()
     {
         userStatus.ItemSelect();
+    }
+
+    public string GetItemStatus(int gameLevel)
+    {
+        return gameLevel == 5 ? "x2" : "+1";
     }
 
     /**********
@@ -65,10 +63,5 @@ public class ItemScript : MonoBehaviour
     public void SetLineIndex(int index)
     {
         LineIndex = index;
-    }
-
-    public string GetItemStatus(int gameLevel)
-    {
-        return gameLevel % 5 == 0 ? "x2" : "+1";
     }
 }

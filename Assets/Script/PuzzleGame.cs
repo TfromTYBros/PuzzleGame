@@ -7,7 +7,7 @@ public class PuzzleGame : MonoBehaviour
 {
     public GameObject[] Lines;
     [SerializeField] private List<int> randomSeed = new List<int> { 0, 1, 2, 3, 4 };
-    [SerializeField] private List<int> randomSeed3_5 = new List<int> { 3, 4, 5 };
+    [SerializeField] private List<int> randomSeed2_4 = new List<int> { 2, 3, 4 };
 
     //*************Block***************//
     private readonly List<float> posXs = new List<float> { -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
@@ -90,14 +90,14 @@ public class PuzzleGame : MonoBehaviour
         }
     }
 
-    private void RandomSeedChange3_5()
+    private void RandomSeedChange2_4()
     {
         for (int i = 0; i < 3; i++)
         {
             int value = Random.Range(0, 3);
-            int temp = randomSeed3_5[i];
-            randomSeed3_5[i] = randomSeed3_5[value];
-            randomSeed3_5[value] = temp;
+            int temp = randomSeed2_4[i];
+            randomSeed2_4[i] = randomSeed2_4[value];
+            randomSeed2_4[value] = temp;
         }
     }
 
@@ -257,8 +257,10 @@ public class PuzzleGame : MonoBehaviour
         }
         else
         {
-            RandomSeedChange3_5();
-            RandomMakeBlocks(randomSeed3_5[0]);
+            RandomSeedChange2_4();
+            RandomMakeBlocks(randomSeed2_4[0]);
+            //RandomSeedChange();
+            //RandomMakeBlocks(randomSeed[0] + 1);
             userStatus.ResetGameLevelUpCount();
             StartBallAngle();
         }

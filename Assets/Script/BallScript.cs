@@ -111,7 +111,7 @@ public class BallScript : MonoBehaviour
     private void DicideBallAngle(Vector3 block)
     {
         Vector3 result = this.transform.position - block;
-        Debug.Log(result);
+        //Debug.Log(result);
         if (edge <= result.x)
         {
             //Debug.Log("Right");

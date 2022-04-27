@@ -138,11 +138,6 @@ public class UserStatus : MonoBehaviour
     {
         if (gameLevel < 999) gameLevel++;
     }
-
-    public bool IsGameLevel10()
-    {
-        return gameLevel % 10 == 0;
-    }
     private bool IsGAMESET()
     {
         return GetGameLevel() >= 10;
@@ -202,7 +197,7 @@ public class UserStatus : MonoBehaviour
 
     public void ItemSelect()
     {
-        if (GetGameLevel() % 10 == 0) Item_Ballx2();
+        if (GetGameLevel() == 5) Item_Ballx2();
         else Item_BallPlus();
     }
 
