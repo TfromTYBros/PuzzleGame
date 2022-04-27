@@ -51,12 +51,12 @@ public class UserInput : MonoBehaviour
             else if (puzzleGame.state == PuzzleGame.GameState.GAMEOVER)
             {
                 DisGameOverPanel();
-                puzzleGame.ReStart();
+                puzzleGame.ReStart(0);
             }
             else if (puzzleGame.state == PuzzleGame.GameState.GAMESET && IsEnaGameSetPanel())
             {
                 DisGameSetPanel();
-                puzzleGame.ReStart();
+                puzzleGame.ReStart(1);
             }
         }
 

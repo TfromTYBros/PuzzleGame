@@ -322,8 +322,11 @@ public class PuzzleGame : MonoBehaviour
         userInput.EnaGameOverPanel();
     }
 
-    public void ReStart()
+    public void ReStart(int stateNumber)
     {
+        //stateNumber -> 0 == GAMEOVER
+        //stateNumber -> 1 == GAMESET
+
         //Ball
         userStatus.BallCountReset();
         userInput.ResetTouchRroundPos();
@@ -356,8 +359,8 @@ public class PuzzleGame : MonoBehaviour
         MainCameraMaterialChange(0);
 
         //Fade
-        fadeGameOver.FadeOut(1);
-        fadeGameSet.FadeOut(1);
+        if (stateNumber == 0)fadeGameOver.FadeOut(1);
+        else if (stateNumber == 1)fadeGameSet.FadeOut(1);
 
         //Slider
         userStatus.ResetSlider();

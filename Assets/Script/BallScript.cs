@@ -117,22 +117,22 @@ public class BallScript : MonoBehaviour
         //Debug.Log(result);
         if (edge <= result.x)
         {
-            Debug.Log("Right");
+            //Debug.Log("Right");
             GoRight();
         }
         else if (result.x <= -edge)
         {
-            Debug.Log("Left");
+            //Debug.Log("Left");
             GoLeft();
         }
         else if (edge <= result.y)
         {
-            Debug.Log("Up");
+            //Debug.Log("Up");
             GoUp();
         }
         else if (result.y <= -edge)
         {
-            Debug.Log("Down");
+            //Debug.Log("Down");
             GoDown();
         }
     }
