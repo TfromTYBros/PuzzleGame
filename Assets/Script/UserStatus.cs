@@ -130,7 +130,8 @@ public class UserStatus : MonoBehaviour
             }
             PlusGameLevelUpcOunt();
             puzzleGame.MainCameraMaterialChange(GetGameLevel() % 10);
-            animesScript.GoAnimeOnLevelUp();
+            if (GetGameLevel() != 9) animesScript.GoAnimeOnLevelUp();
+            else animesScript.GoAnimeOnLevel9();
         }
     }
     private void GameLevelUp()

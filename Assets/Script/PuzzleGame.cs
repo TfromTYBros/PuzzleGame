@@ -38,8 +38,8 @@ public class PuzzleGame : MonoBehaviour
     //***********GAMESET**************//
     public Fade fadeGameSet;
     //WaitForSeconds gameSetSeconds = new WaitForSeconds(4.6f);
-    WaitForSeconds gameSetSeconds = new WaitForSeconds(3.6f);
-    WaitForSeconds cancelAnimeSeconds = new WaitForSeconds(6.0f);
+    WaitForSeconds gameSetTime = new WaitForSeconds(3.0f);
+    WaitForSeconds cancelAnimeTime = new WaitForSeconds(6.0f);
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
@@ -47,6 +47,7 @@ public class PuzzleGame : MonoBehaviour
 
     //*************Anime*************//
     AnimesScript animesScript;
+    WaitForSeconds startGameAnimeTime = new WaitForSeconds(3.0f);
 
     //***********UserInput*************//
     UserInput userInput;
@@ -60,7 +61,8 @@ public class PuzzleGame : MonoBehaviour
         userStatus = FindObjectOfType<UserStatus>();
         animesScript = FindObjectOfType<AnimesScript>();
         state = GameState.START_GAME;
-        StartGame();
+        //StartGame();
+        StartCoroutine(StartGameAnime());
     }
 
     /**********************
@@ -133,11 +135,19 @@ public class PuzzleGame : MonoBehaviour
      *START_GAME
      ***********/
 
+    private IEnumerator StartGameAnime()
+    {
+        animesScript.GoAnimeOnSTART_GAME();
+        yield return startGameAnimeTime;
+        StartGame();
+    }
+
     private void StartGame()
     {
         FirstMakeBlockAndItems();
         userInput.EnaGuideBall();
         userInput.FirstDicidePos();
+        userStatus.EnaHaveBallCountText();
         StartBallAngle();
     }
 
@@ -317,7 +327,8 @@ public class PuzzleGame : MonoBehaviour
     {
         state = GameState.GAMEOVER;
         animesScript.CancelAnimeToLevelUp();
-        fadeGameOver.FadeIn(1);
+        animesScript.CancelAnimeToLevel9();
+        fadeGameOver.FadeIn(2);
         TextChangeOnGAMEOVER();
         userInput.EnaGameOverPanel();
     }
@@ -366,7 +377,8 @@ public class PuzzleGame : MonoBehaviour
         userStatus.ResetSlider();
 
         //reStart
-        StartGame();
+        state = GameState.START_GAME;
+        StartCoroutine(StartGameAnime());
     }
 
     private void TextChangeOnGAMEOVER()
@@ -391,14 +403,14 @@ public class PuzzleGame : MonoBehaviour
 
     private IEnumerator EnaPanelOnGAMESET()
     {
-        yield return gameSetSeconds;
+        yield return gameSetTime;
         fadeGameSet.FadeIn(1);
         userInput.EnaGameSetPanel();
     }
 
     private IEnumerator CancelGameSetAnime()
     {
-        yield return cancelAnimeSeconds;
+        yield return cancelAnimeTime;
         animesScript.CancelAnimeToGameSet();
     }
 }
