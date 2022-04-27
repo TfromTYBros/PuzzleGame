@@ -95,9 +95,9 @@ public class PuzzleGame : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             int value = Random.Range(0, 3);
-            int temp = randomSeed[i];
-            randomSeed[i] = randomSeed[value];
-            randomSeed[value] = temp;
+            int temp = randomSeed3_5[i];
+            randomSeed3_5[i] = randomSeed3_5[value];
+            randomSeed3_5[value] = temp;
         }
     }
 

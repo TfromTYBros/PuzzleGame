@@ -41,7 +41,6 @@ public class BallScript : MonoBehaviour
         speedX = Mathf.Abs(x);
         speedY = Mathf.Abs(y);
     }
-
     private float GetSpeedX()
     {
         return speedX * GetReverseX();
@@ -62,12 +61,10 @@ public class BallScript : MonoBehaviour
     {
         plusX = true;
     }
-
     private void GoLeft()
     {
         plusX = false;
     }
-
     private void GoUp()
     {
         plusY = true;
@@ -114,23 +111,23 @@ public class BallScript : MonoBehaviour
     private void DicideBallAngle(Vector3 block)
     {
         Vector3 result = this.transform.position - block;
-        //Debug.Log(result);
+        Debug.Log(result);
         if (edge <= result.x)
         {
             //Debug.Log("Right");
             GoRight();
         }
-        else if (result.x <= -edge)
+        if (result.x <= -edge)
         {
             //Debug.Log("Left");
             GoLeft();
         }
-        else if (edge <= result.y)
+        if (edge <= result.y)
         {
             //Debug.Log("Up");
             GoUp();
         }
-        else if (result.y <= -edge)
+        if (result.y <= -edge)
         {
             //Debug.Log("Down");
             GoDown();
