@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class PuzzleGame : MonoBehaviour
 {
     public GameObject[] Lines;
-    [SerializeField] private List<int> randomSeed = new List<int> { 0, 1, 2, 3, 4 };
-    [SerializeField] private int[] randomSeed2_4 = {2, 2, 2, 3, 3, 4 };
+    [SerializeField] private List<int> randomSeedBlockPos = new List<int>{ 0, 1, 2, 3, 4 };
+    [SerializeField] private List<int> randomSeedBlockMake = new List<int>{ 2, 2, 2, 2, 2, 3, 3, 3, 3, 4};
 
     //*************Block***************//
     private readonly List<float> posXs = new List<float> { -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
@@ -34,6 +34,7 @@ public class PuzzleGame : MonoBehaviour
     public Fade fadeGameOver;
     public Text blocksOnGameOverText;
     public Text gameLevelOnGameOverText;
+    public Text turnTextOnGAMEOVER;
 
     //***********GAMESET**************//
     public Fade fadeGameSet;
@@ -41,6 +42,7 @@ public class PuzzleGame : MonoBehaviour
     WaitForSeconds gameSetTime = new WaitForSeconds(3.0f);
     WaitForSeconds cancelAnimeTime = new WaitForSeconds(6.0f);
     public Text blocksOnGAMESET;
+    public Text turnTextOnGAMESET;
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
@@ -62,7 +64,6 @@ public class PuzzleGame : MonoBehaviour
         userStatus = FindObjectOfType<UserStatus>();
         animesScript = FindObjectOfType<AnimesScript>();
         state = GameState.START_GAME;
-        //StartGame();
         StartCoroutine(StartGameAnime());
     }
 
@@ -80,25 +81,25 @@ public class PuzzleGame : MonoBehaviour
         return blockMakeCount;
     }
 
-    private void RandomSeedChange()
+    private void ShuffleRandomSeed()
     {
         for (int i = 0; i < 5; i++)
         {
             int value = Random.Range(0, 5);
-            int temp = randomSeed[i];
-            randomSeed[i] = randomSeed[value];
-            randomSeed[value] = temp;
+            int temp = randomSeedBlockPos[i];
+            randomSeedBlockPos[i] = randomSeedBlockPos[value];
+            randomSeedBlockPos[value] = temp;
         }
     }
 
-    private void RandomSeedChange2_4()
+    private void ShuffleRandomSeedBlockMake()
     {
-        for (int i = 0; i < randomSeed2_4.Length; i++)
+        for (int i = 0; i < randomSeedBlockMake.Count; i++)
         {
-            int value = Random.Range(0, randomSeed2_4.Length);
-            int temp = randomSeed2_4[i];
-            randomSeed2_4[i] = randomSeed2_4[value];
-            randomSeed2_4[value] = temp;
+            int value = Random.Range(0, randomSeedBlockMake.Count);
+            int temp = randomSeedBlockMake[i];
+            randomSeedBlockMake[i] = randomSeedBlockMake[value];
+            randomSeedBlockMake[value] = temp;
         }
     }
 
@@ -145,6 +146,7 @@ public class PuzzleGame : MonoBehaviour
 
     private void StartGame()
     {
+        ShuffleRandomSeedBlockMake();
         FirstMakeBlockAndItems();
         userInput.EnaGuideBall();
         userInput.FirstDicidePos();
@@ -156,16 +158,16 @@ public class PuzzleGame : MonoBehaviour
     {
         for (int i = 2; i >= 0; i--)
         {
-            RandomSeedChange();
+            ShuffleRandomSeed();
             for (int j = 0; j < 3; j++)
             {
                 if (i == 0 && j == 0)
                 {
-                    GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
+                    GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeedBlockPos[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
                     newItem.name = "Item" + newItem.GetComponent<ItemScript>().GetItemStatus(userStatus.GetGameLevel());
                     continue;
                 }
-                GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
+                GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeedBlockPos[j]], Lines[i].transform.position.y, blockPosZ), Quaternion.identity, Lines[i].transform);
                 newBlock.name = "Block" + GetBlockMakeCount();
                 BlockScript blockScript = newBlock.GetComponent<BlockScript>();
                 blockScript.SetHitCount(userStatus.GetGameLevel());
@@ -258,11 +260,9 @@ public class PuzzleGame : MonoBehaviour
         }
         else
         {
-            RandomSeedChange2_4();
-            RandomMakeBlocks(randomSeed2_4[0]);
-            //RandomSeedChange();
-            //RandomMakeBlocks(randomSeed[0] + 1);
+            RandomMakeBlocks(randomSeedBlockMake[userStatus.GetTurns() % 10]);
             userStatus.ResetGameLevelUpCount();
+            userStatus.TurnProgress();
             StartBallAngle();
         }
     }
@@ -274,18 +274,18 @@ public class PuzzleGame : MonoBehaviour
 
     private void RandomMakeBlocks(int value)
     {
-        RandomSeedChange();
+        ShuffleRandomSeed();
         //Debug.Log(randomSeed);
         for (int i = 0; i < value; i++)
         {
             if (userStatus.GetGameLevelUpCount() != 0)
             {
-                GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeed[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
+                GameObject newItem = Instantiate(itemPrefab, new Vector3(posXs[randomSeedBlockPos[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
                 newItem.name = "Item" + newItem.GetComponent<ItemScript>().GetItemStatus(userStatus.GetGameLevel());
                 userStatus.MinusGameLevelUpCount();
                 continue;
             }
-            GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeed[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
+            GameObject newBlock = Instantiate(blockPrefab, new Vector3(posXs[randomSeedBlockPos[i]], Lines[0].transform.position.y, blockPosZ), Quaternion.identity, Lines[0].transform);
             newBlock.name = "Block" + GetBlockMakeCount();
             BlockScript blockScript = newBlock.GetComponent<BlockScript>();
             blockScript.SetHitCount(userStatus.GetGameLevel());
@@ -380,6 +380,9 @@ public class PuzzleGame : MonoBehaviour
         //Slider
         userStatus.ResetSlider();
 
+        //Turns
+        userStatus.ChangeTurns(1);
+
         //reStart
         state = GameState.START_GAME;
         StartCoroutine(StartGameAnime());
@@ -389,6 +392,7 @@ public class PuzzleGame : MonoBehaviour
     {
         blocksOnGameOverText.text = userStatus.GetBlockBreakPoint().ToString();
         gameLevelOnGameOverText.text = userStatus.GetGameLevel().ToString();
+        turnTextOnGAMEOVER.text = userStatus.GetTurns().ToString();
     }
 
     /********
@@ -424,6 +428,7 @@ public class PuzzleGame : MonoBehaviour
     private void TextChangeOnGAMESET()
     {
         blocksOnGAMESET.text = userStatus.GetBlockBreakPoint().ToString();
+        turnTextOnGAMESET.text = userStatus.GetTurns().ToString();
     }
 
     private void ResetBallBox()

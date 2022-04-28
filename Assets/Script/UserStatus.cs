@@ -29,6 +29,9 @@ public class UserStatus : MonoBehaviour
     private readonly float ZERO = 0.0f;
     private readonly float ONE = 1.0f;
 
+    /************Turns***********/
+    [SerializeField] private int turns = 1;
+
     void Start()
     {
         puzzleGame = FindObjectOfType<PuzzleGame>();
@@ -189,6 +192,26 @@ public class UserStatus : MonoBehaviour
     public void PlusBlockBreakPoint()
     {
         if (puzzleGame.state == PuzzleGame.GameState.MOVING_NOW) blockBreakPoint++;
+    }
+
+    /*******
+     *Turns
+     *******/
+
+    public void ChangeTurns(int turn)
+    {
+        if (turn != 0) turns = turn;
+        else turns = 1;
+    }
+
+    public int GetTurns()
+    {
+        return turns;
+    }
+
+    public void TurnProgress()
+    {
+        turns++;
     }
 
     /******
