@@ -119,7 +119,7 @@ public class UserStatus : MonoBehaviour
     }
     public void IsGameLevelUp()
     {
-        if ((GetBlockBreakPoint() % 10) == 0 && GetBlockBreakPoint() != 0)
+        if ((GetBlockBreakPoint() % 10) == 0 && GetBlockBreakPoint() != 0 && puzzleGame.state != PuzzleGame.GameState.GAMESET)
         {
             GameLevelUp();
             ChangeGameLevelText();

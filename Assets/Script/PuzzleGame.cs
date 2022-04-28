@@ -333,6 +333,7 @@ public class PuzzleGame : MonoBehaviour
         animesScript.CancelAnimeToLevel9();
         fadeGameOver.FadeIn(2);
         TextChangeOnGAMEOVER();
+        userInput.DisBallShadow();
         userInput.EnaGameOverPanel();
     }
 
