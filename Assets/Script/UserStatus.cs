@@ -188,7 +188,7 @@ public class UserStatus : MonoBehaviour
 
     public void PlusBlockBreakPoint()
     {
-        blockBreakPoint++;
+        if (puzzleGame.state == PuzzleGame.GameState.MOVING_NOW) blockBreakPoint++;
     }
 
     /******
@@ -197,6 +197,7 @@ public class UserStatus : MonoBehaviour
 
     public void ItemSelect()
     {
+        if (puzzleGame.state != PuzzleGame.GameState.MOVING_NOW) return;
         if (GetGameLevel() == 5) Item_Ballx2();
         else Item_BallPlus();
     }

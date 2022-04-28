@@ -7,7 +7,7 @@ public class PuzzleGame : MonoBehaviour
 {
     public GameObject[] Lines;
     [SerializeField] private List<int> randomSeed = new List<int> { 0, 1, 2, 3, 4 };
-    [SerializeField] private List<int> randomSeed2_4 = new List<int> { 2, 3, 4 };
+    [SerializeField] private int[] randomSeed2_4 = {2, 2, 2, 3, 3, 4 };
 
     //*************Block***************//
     private readonly List<float> posXs = new List<float> { -2.2f, -1.1f, 0.0f, 1.1f, 2.2f };
@@ -40,6 +40,7 @@ public class PuzzleGame : MonoBehaviour
     //WaitForSeconds gameSetSeconds = new WaitForSeconds(4.6f);
     WaitForSeconds gameSetTime = new WaitForSeconds(3.0f);
     WaitForSeconds cancelAnimeTime = new WaitForSeconds(6.0f);
+    public Text blocksOnGAMESET;
 
     //***********GameState**************//
     public enum GameState { START_GAME,BALL_ANGLE,MOVING_NOW,CLEAN_UP,GAMESET,GAMEOVER };
@@ -92,9 +93,9 @@ public class PuzzleGame : MonoBehaviour
 
     private void RandomSeedChange2_4()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < randomSeed2_4.Length; i++)
         {
-            int value = Random.Range(0, 3);
+            int value = Random.Range(0, randomSeed2_4.Length);
             int temp = randomSeed2_4[i];
             randomSeed2_4[i] = randomSeed2_4[value];
             randomSeed2_4[value] = temp;
@@ -252,7 +253,7 @@ public class PuzzleGame : MonoBehaviour
         AllMoveBlocks();
         if (IsGameOver())
         {
-            Debug.Log("GameOver");
+            //Debug.Log("GameOver");
             StartGameOver();
         }
         else
@@ -397,6 +398,7 @@ public class PuzzleGame : MonoBehaviour
     {
         state = GameState.GAMESET;
         StopAllCoroutines();
+        TextChangeOnGAMESET();
         animesScript.CancelAnimeToLevelUp();
         animesScript.GoAnimeOnGAMESET();
         StartCoroutine(CancelGameSetAnime());
@@ -414,5 +416,10 @@ public class PuzzleGame : MonoBehaviour
     {
         yield return cancelAnimeTime;
         animesScript.CancelAnimeToGameSet();
+    }
+
+    private void TextChangeOnGAMESET()
+    {
+        blocksOnGAMESET.text = userStatus.GetBlockBreakPoint().ToString();
     }
 }
