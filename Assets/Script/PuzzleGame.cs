@@ -399,9 +399,11 @@ public class PuzzleGame : MonoBehaviour
     {
         state = GameState.GAMESET;
         StopAllCoroutines();
+        ResetBallBox();
         TextChangeOnGAMESET();
         animesScript.CancelAnimeToLevelUp();
         animesScript.GoAnimeOnGAMESET();
+        userInput.DisBallShadow();
         StartCoroutine(CancelGameSetAnime());
         StartCoroutine(EnaPanelOnGAMESET());
     }
@@ -422,5 +424,14 @@ public class PuzzleGame : MonoBehaviour
     private void TextChangeOnGAMESET()
     {
         blocksOnGAMESET.text = userStatus.GetBlockBreakPoint().ToString();
+    }
+
+    private void ResetBallBox()
+    {
+        if (ballBox.transform.childCount == 0 && state != GameState.GAMESET) return;
+        foreach (Transform ball in ballBox.transform)
+        {
+            GameObject.Destroy(ball.gameObject);
+        }
     }
 }
