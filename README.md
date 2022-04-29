@@ -1,5 +1,5 @@
 # name
-PuzzleGame
+PuzzleGame(UnityRoom上ではSuperBreakout)
 ![gif](https://github.com/TfromTYBros/PuzzleGame/blob/49195893c1b4a53f677782711ca87cf21b978f79/CommercialPictures/PuzzleGame.gif)
 
 ## GameLink
