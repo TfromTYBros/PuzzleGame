@@ -7,6 +7,7 @@ public class ItemScript : MonoBehaviour
 {
     UserStatus userStatus;
     public Text description;
+    public Animator animator;
 
     /********Line********/
     [SerializeField] private int LineIndex = 0;
@@ -23,7 +24,7 @@ public class ItemScript : MonoBehaviour
         {
             Buffer();
             userStatus.ChangeTextHaveBallCount();
-            Destroy(this.gameObject);
+            ThisItemDestroy();
         }
     }
 
@@ -44,6 +45,30 @@ public class ItemScript : MonoBehaviour
     public string GetItemStatus(int gameLevel)
     {
         return gameLevel == 5 ? "x2" : "+1";
+    }
+
+    /**********
+     *Animator
+     **********/
+
+    private void ThisItemDestroy()
+    {
+        GetComponent<Rigidbody2D>().simulated = false;
+        userStatus.moveTrashBoxs[GetLineIndex()].transform.position = this.transform.position;
+        this.gameObject.transform.SetParent(userStatus.moveTrashBoxs[GetLineIndex()].transform);
+        GoDestroyAnime();
+        StartCoroutine(DelayDestroy());
+    }
+
+    private void GoDestroyAnime()
+    {
+        animator.SetTrigger("Start");
+    }
+
+    private IEnumerator DelayDestroy()
+    {
+        yield return userStatus.delayToItemDestroy;
+        Destroy(this.gameObject);
     }
 
     /**********

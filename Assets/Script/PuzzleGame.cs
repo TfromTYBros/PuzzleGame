@@ -436,7 +436,9 @@ public class PuzzleGame : MonoBehaviour
         if (ballBox.transform.childCount == 0 && state != GameState.GAMESET) return;
         foreach (Transform ball in ballBox.transform)
         {
-            GameObject.Destroy(ball.gameObject);
+            //GameObject.Destroy(ball.gameObject);
+            ball.GetComponent<Rigidbody2D>().simulated = false;
+            ball.GetComponent<BallScript>().ThisBallDestroyOnGAMESET();
         }
     }
 }

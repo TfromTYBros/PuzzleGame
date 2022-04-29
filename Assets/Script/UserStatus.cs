@@ -20,9 +20,11 @@ public class UserStatus : MonoBehaviour
     [SerializeField] private int blockBreakPoint = 0;
     public GameObject trashBox;
     public WaitForSeconds delayToDestroy = new WaitForSeconds(0.5f);
+    public WaitForSeconds delayToItemDestroy = new WaitForSeconds(1.0f);
 
     /************Anime*************/
     AnimesScript animesScript;
+    public GameObject[] moveTrashBoxs;
 
     /************Parts**************/
     PuzzleGame puzzleGame;

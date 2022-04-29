@@ -10,6 +10,8 @@ public class BallScript : MonoBehaviour
     [SerializeField] private float speedX = 0.0f;
     [SerializeField] private float speedY = 0.0f;
     private readonly float edge = 0.5f;
+
+    public Animator animator;
     private void FixedUpdate()
     {
         if (moveStart)
@@ -106,6 +108,18 @@ public class BallScript : MonoBehaviour
         {
             DicideBallAngle(collision.transform.position);
         }
+    }
+
+    public void ThisBallDestroyOnGAMESET()
+    {
+        animator.SetTrigger("Start");
+        StartCoroutine(DelayDestroy());
+    }
+
+    private IEnumerator DelayDestroy()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Destroy(this.gameObject);
     }
 
     private void DicideBallAngle(Vector3 block)
